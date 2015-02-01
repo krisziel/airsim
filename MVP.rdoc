@@ -11,7 +11,7 @@ User can lease slots at an airport
 User can return leased gates
 User can see all their routes/fares from airport
 
-### Aircraft ###
+### AIRCRAFT ###
 User can view owned aircraft list
   User can select any aircraft to view age, range, route, layout
   User can modify layout or sell/return plane

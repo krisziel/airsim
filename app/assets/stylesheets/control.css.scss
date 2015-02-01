@@ -1,0 +1,40 @@
+#control {
+  width: 300px;
+  position: absolute;
+  height: 100%;
+  background: #000000;
+  ul {
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul.tabs {
+    height: 40px;
+    background: #ff0000;
+    li {
+      width: 50px;
+      height: 100%;
+      border-right: 1px solid #00ff00;
+      float: left;
+      &:last-child {
+        border-right: none;
+      }
+      &.selected {
+        background: #0000ff;
+      }
+    }
+  }
+  ul.content {
+    height: auto;
+    background: #003366;
+    li {
+      border-bottom: 1px solid #330000;
+      padding: 5px;
+      div.title {
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+}
