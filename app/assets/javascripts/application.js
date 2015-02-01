@@ -17,6 +17,7 @@
 $(document).ready(function(){
   sizeMap();
   loadMap();
+  loadAircraft();
 });
 $(window).resize(function(){
   sizeMap();

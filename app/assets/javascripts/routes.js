@@ -1,11 +1,11 @@
 var allRoutes = {};
-var activeRoutes = [];
+var activeRoutes = {};
 
 function drawRoutes() {
   $.getJSON('routes/').done(function(data) {
     $.each(data,function(i,value){
       var route = value;
-      activeRoutes.push(route);
+      activeRoutes[value.route.id] = route;
       drawRoute({origin:airports[route.route.origin_id],dest:airports[route.route.destination_id],type:'normal'});
     });
   });
@@ -79,8 +79,12 @@ function viewRoute(args) {
   var origin = airports[args.origin];
   var dest = airports[args.dest];
   $.each(activeRoutes,function(i,value){
-    if(((value.origin.id === origin.id)&&(value.dest.id === dest.id))||((value.dest.id === origin.id)&&(value.origin.id === dest.id))) {
-      loadExistingRoute(value.id);
+    value.route.origin = airports[value.route.origin_id];
+    value.route.dest = airports[value.route.destination_id];
+    var routeDest = value.route.dest;
+    var routeOrigin = value.route.origin;
+    if(((routeOrigin.id === origin.id)&&(routeDest.id === dest.id))||((routeDest.id === origin.id)&&(routeOrigin.id === dest.id))) {
+      loadExistingRoute(value.route.id);
     } else {
       loadNewRoute({origin:origin.id,dest:dest.id});
     }
@@ -92,5 +96,37 @@ function loadNewRoute(args) {
   });
 }
 function loadExistingRoute(id) {
-
+  var route = activeRoutes[id];
+  console.log(route);
+  var flights = route.flights;
+  var route = route.route;
+  var routePanel = '<div class="route-panel" id="routePanel">';
+  routePanel += '<div class="airport"><span>' + route.origin.iata + '</span>' + route.origin.name + '</div>';
+  routePanel += '<span class="fa fa-arrows-h"></span>';
+  routePanel += '<div class="airport"><span>' + route.dest.iata + '</span>' + route.dest.name + '</div>';
+  routePanel += '<ul>';
+  for(i=0;i<flights.length;i++) {
+    var flight = flights[i];
+    var flightContent = '<li class="flight' + flight.id + '" class="flight" data-flightid="' + flight.id + '">';
+    var profit = (flight.revenue - flight.cost);
+    var profitColor = 'colorBlack';
+    if(profit > 0) {
+      profitColor = 'colorDarkGreen';
+    } else if(profit < 0) {
+      profitColor = 'colorDarkRed';
+    }
+    flightContent += '<div class="equipment">' + aircrafts[flight.aircraft_id].fullName + '</div>';
+    flightContent += '<div class="frequencies">' + flight.frequencies + 'x weekly</div>';
+    flightContent += '<div class="revenue">Revenue: $' + comma(flight.revenue) + '</div>';
+    flightContent += '<div class="revenue">Cost: $' + comma(flight.cost) + '</div>';
+    flightContent += '<div class="revenue ' + profitColor + '">Profit: $' + comma(profit) + '</div>';
+    flightContent += '</li>';
+    routePanel += flightContent;
+  }
+  routePanel += '</ul>';
+  $('body').append(routePanel);
+  $('#route' + route.id).on('click','.flight',function(){
+    console.log($(this).attr('data-flightid'));
+    loadFlightInfo($(this).attr('data-flightid'));
+  });
 }
