@@ -1,12 +1,19 @@
 var allRoutes = {};
+var activeRoutes = [];
 
 function drawRoutes() {
-
+  $.getJSON('routes/').done(function(data) {
+    $.each(data,function(i,value){
+      var route = value;
+      activeRoutes.push(route);
+      drawRoute({origin:airports[route.route.origin_id],dest:airports[route.route.destination_id],type:'normal'});
+    });
+  });
 }
 function highlightRoutes(id) {
   unhighlightRoutes();
   $.each(allRoutes,function(i,value){
-    if((value.origin.id === id)||(value.destination.id === id)) {
+    if((value.origin.id === id)||(value.dest.id === id)) {
       drawRoute({origin:value.origin,dest:value.dest,type:'highlight'});
     }
   });
@@ -21,6 +28,9 @@ function unhighlightRoutes() {
 function drawRoute(args) {
   var origin = args.origin;
   var dest = args.dest;
+  if(origin === dest) {
+    return true;
+  }
   var type = args.type;
   var lineid = 'route' + origin.id + dest.id;
   var lineid2 = 'route' + dest.id + origin.id;
@@ -34,19 +44,19 @@ function drawRoute(args) {
   }
   if(type === 'new') {
     routeSettings = {
-      color: '#6B3321',
+      color: '#eeaa77',
       weight: 3,
       opacity: 1
     }
   } else if(type === 'highlight') {
     routeSettings = {
-      color: '#003366',
+      color: '#aa0114',
       weight: 2,
       opacity: 1
     }
   } else {
     routeSettings = {
-      color: '#eeaa77',
+      color: '#548cba',
       weight: 2,
       opacity: 1
     }
@@ -64,4 +74,23 @@ function drawRoute(args) {
   newLine.origin = origin;
   newLine.dest = dest;
   allRoutes[lineid] = newLine;
+}
+function viewRoute(args) {
+  var origin = airports[args.origin];
+  var dest = airports[args.dest];
+  $.each(activeRoutes,function(i,value){
+    if(((value.origin.id === origin.id)&&(value.dest.id === dest.id))||((value.dest.id === origin.id)&&(value.origin.id === dest.id))) {
+      loadExistingRoute(value.id);
+    } else {
+      loadNewRoute({origin:origin.id,dest:dest.id});
+    }
+  });
+}
+function loadNewRoute(args) {
+  $.getJSON('routes/' + args.origin + '/' + args.destination).done(function(data){
+
+  });
+}
+function loadExistingRoute(id) {
+
 }

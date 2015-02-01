@@ -8,4 +8,12 @@ Rails.application.routes.draw do
   get 'airports/:iata' => 'airports#data'
   patch 'airports/:iata/' => 'airports#update'
 
+  ## ROUTES ##
+  get 'routes/' => 'routes#all'
+  get 'routes/:origin/:destination' => 'routes#info'
+
+  ## FLIGHTS ##
+  get 'flights/' => 'flights#all'
+  get 'flights/:origin/:destination' => 'flights#info'
+
 end

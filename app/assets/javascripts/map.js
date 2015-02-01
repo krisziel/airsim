@@ -15,3 +15,13 @@ function loadMap(){
   globalMap = map;
   addAirports(map);
 }
+function latlon(obj) {
+  var ll = {}
+  if(obj.x) {
+    ll.lat = obj.y;
+    ll.lon = obj.x;
+  } else {
+    ll = obj
+  }
+  return L.latLng(ll);
+}
