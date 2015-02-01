@@ -21,3 +21,8 @@ $(document).ready(function(){
 $(window).resize(function(){
   sizeMap();
 });
+
+function comma(number) {
+  number = number || 0;
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
