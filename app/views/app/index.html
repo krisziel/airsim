@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="ui unordered steps" id="searchResults">
-    <a class="step active" id="tt1074638"><div class="content"><div class="title">Skyfall</div><div class="description">2012</div></div><i class="info circle icon"></i></a>
+    <a class="step active" id="tt1074638"><div class="content"><div>Dubai International Airport (DXB)</div><div>Dubai, United Arab Emirates</div><div>Population</div><div>Slots: 1,989 (1,213 available)</div></div><i class="info circle icon"></i></a>
   </div>
   <ul class="content" id="content" style="display:none">
   </ul>
@@ -32,28 +32,28 @@
   <div class="route-info">
     <div class="info">
       <div class="ui statistic">
-        <div class="value">
-          JFK
-        </div>
-        <div class="label">
-          JFK International Airport
-        </div>
+        <div class="value">JFK</div>
+        <div class="label">JFK International Airport</div>
       </div>
       <i class="resize horizontal icon"></i>
       <div class="ui statistic">
-        <div class="value">
-          IAH
-        </div>
-        <div class="label">
-          George Bush Intercontinental Airport
-        </div>
+        <div class="value">IAH</div>
+        <div class="label">George Bush Intercontinental Airport</div>
       </div>
     </div>
     <div class="ui unordered steps flight-list" id="fff">
-      <a class="step active" id="tt1074638"><div class="content"><div class="title">Skyfall</div><div class="description">2012</div></div></a>
+      <a class="step active"><div class="content"><div class="title">Boeing 777-300ER (5x/week)</div><div class="description">87% Load Factor ($12,500 profit)</div></div></a>
     </div>
   </div>
   <div class="flight-info">
+    <div class="row-container">
+      <div class="row"><span class="label">Aircraft:</span> Boeing 777-300ER</div>
+      <div class="row"><span class="label">Flight Length:</span> 5,451 Miles</div>
+      <div class="row"><span class="label">Flight Time:</span> 9:50</div>
+      <div class="row"><span class="label">Weekly Profit:</span> $200,000</div>
+      <div class="row"><span class="label">Deployed Aircraft:</span> <span id="deployedAircraft">1</span><input name="deployed-aircraft" type="range" class="frequencies"></div>
+      <div class="row"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">5</span><input name="weekly-frequencies" type="range" class="frequencies"></div>
+    </div>
     <div class="tab">
       <div class="ui secondary menu">
         <a class="item active" data-tab="first">First</a>
@@ -62,8 +62,27 @@
         <a class="item" data-tab="economy">Economy</a>
       </div>
       <div class="ui tab segment active" data-tab="first">
+        <div class="row"><span class="label">Capacity:</span> 8 Seats</div>
+        <div class="row"><span class="label">Load Factor:</span> 52%</div>
+        <div class="row"><span class="label">Weekly Profit:</span> $40,000</div>
+        <div class="row"><span class="label">Fare:</span> $<span id="fare">5,403</span><input name="fare" type="range"></div>
+      </div>
+      <div class="ui tab segment" data-tab="business">
         asdfghjk
       </div>
+      <div class="ui tab segment" data-tab="premium">
+        asdfghjk
+      </div>
+      <div class="ui tab segment" data-tab="economy">
+        asdfghjk
+      </div>
+    </div>
+    <div class="ui buttons">
+      <div class="ui button">Cancel</div>
+      <div class="or"></div>
+      <div class="ui positive button">Save</div>
+      <div class="or"></div>
+      <div class="ui red button">Cancel Flight</div>
     </div>
   </div>
 </div>

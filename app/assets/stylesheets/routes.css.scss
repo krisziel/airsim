@@ -158,7 +158,7 @@
     width: 300px;
     float: left;
     border-left: 1px solid rgba(0,0,0,.3);
-    .tab {
+    .tab > .menu {
       margin: 4px 0 4px 2px;
     }
     .menu {
@@ -167,6 +167,35 @@
         font-size: 12px;
         margin: 2px;
       }
+    }
+    .buttons {
+      margin: 0 0 6px 6px;
+    }
+    .segment[data-tab] {
+      margin: 0px 6px 6px 6px;
+      padding: 10px;
+    }
+    .row-container {
+      margin: 6px;
+    }
+  }
+}
+.row {
+  display: block;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  position: relative;
+  .label {
+    font-weight: bold;
+  }
+  input {
+    float: right;
+    margin-top: 2px;
+    margin-left: 10px;
+    width: 170px;
+    &.frequencies {
+      width: 130px;
     }
   }
 }

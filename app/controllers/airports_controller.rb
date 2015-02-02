@@ -1,16 +1,17 @@
 class AirportsController < ApplicationController
 
   def scrape
-    @airports = FlightStats::Airport.by_country_code params[:country]
-    @airports.each do |airport|
+    airports = FlightStats::Airport.by_country_code params[:country]
+    airports.each do |airport|
       Airport.create(iata:airport.iata,icao:airport.icao,citycode:airport.city_code,name:airport.name,city:airport.city,state:airport.state_code,country:airport.country_name,country_code:airport.country_code,region_name:airport.region_name,latitude:airport.latitude,longitude:airport.longitude)
     end
+    render json: airports
   end
 
   def all
-    @airportsarr = Airport.where(display:1)
-    @airports = {}
-    @airportsarr.each do |airport|
+    airportsarr = Airport.where(display:1)
+    airports = {}
+    airportsarr.each do |airport|
       airportdata = {
         :id => airport.id,
         :iata => airport.iata,
@@ -26,9 +27,9 @@ class AirportsController < ApplicationController
         :routes => Route.where("origin_id=? OR destination_id=?", airport.id, airport.id).length,
         :flights => Flight.count(airport.id)
       }
-      @airports[airport['id']] = airportdata
+      airports[airport['id']] = airportdata
     end
-    render json: @airports
+    render json: airports
   end
 
 end
