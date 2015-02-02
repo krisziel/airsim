@@ -137,8 +137,12 @@
   .flight-list {
     width: 298px;
     height: auto;
+    overflow: hidden;
+    z-index: 7;
+    position: relative;
     .step {
       padding: 8px 12px !important;
+      width: 100%;
       &:first-child {
         -webkit-border-top-left-radius: 0 !important;
         -moz-border-top-left-radius: 0 !important;
@@ -158,6 +162,9 @@
     width: 300px;
     float: left;
     border-left: 1px solid rgba(0,0,0,.3);
+    z-index: 8;
+    position: relative;
+    background: #ffffff;
     .tab > .menu {
       margin: 4px 0 4px 2px;
     }
