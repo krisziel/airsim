@@ -1,22 +1,22 @@
 ### SIGN IN/REGISTER ###
-Users can sign up using twitter or manually
-User receives a confirmation email
-User can select a world to play in
-User can create an airline
+  Users can sign up using twitter or manually
+  User receives a confirmation email
+  User can select a world to play in
+  User can create an airline
 
 ### AIRPORT ###
-User can select an airport and view its basic info (location, slots, etc)
-User can can view list of all flights to/from the airport
-User can lease slots at an airport
-User can return leased gates
-User can see all their routes/fares from airport
+  User can select an airport and view its basic info (location, slots, etc)
+  User can can view list of all flights to/from the airport
+  User can lease slots at an airport
+  User can return leased gates
+  User can see all their routes/fares from airport
 
 ### AIRCRAFT ###
-User can view owned aircraft list
+  User can view owned aircraft list
   User can select any aircraft to view age, range, route, layout
   User can modify layout or sell/return plane
   User can select to identical aircraft purchase from this view
-User van view aircraft availabe for sale/lease
+  User van view aircraft availabe for sale/lease
   User can search by mission (range, capacity, cost)
   User can select any aircraft
   User can view info for the aircraft (capacity, range, hourly cost)
@@ -28,28 +28,28 @@ User van view aircraft availabe for sale/lease
   User can confirm purchase
 
 ### ROUTES ###
-User can select two airports
-User can view all flights between two airports
-User can view all fares between the airports
-User can view estimated market demand
-User can see a list of their capabale+available aircraft
-User can select an available aircraft
-User can choose weekly frequencies
-User can select fare by cabin
-User can select amenities to offer
-User can create the flight
-User can view their flights between airports
-User can view performance of their flights and fares
-User can view a list of all their flights/fares
-User can close a route
+  User can select two airports
+  User can view all flights between two airports
+  User can view all fares between the airports
+  User can view estimated market demand
+  User can see a list of their capabale+available aircraft
+  User can select an available aircraft
+  User can choose weekly frequencies
+  User can select fare by cabin
+  User can select amenities to offer
+  User can create the flight
+  User can view their flights between airports
+  User can view performance of their flights and fares
+  User can view a list of all their flights/fares
+  User can close a route
 
 ### FARES ###
-User can select two airports
-User can view all flights between the airports
-User can view all fares between the two airports
-User can file fare if they have flights to each airport (with only one connection)
+  User can select two airports
+  User can view all flights between the airports
+  User can view all fares between the two airports
+  User can file fare if they have flights to each airport (with only one connection)
   User can view the fare for the individual flights making up the route (i.e. for SFO-DXB fare with IAD as connection, user can see SFO-IAD and IAD-DXB price individually)
   User can view the estimated demand between the airports
   User can choose fares by cabin
   User can file the fare
-Fare is filed
+  Fare is filed
