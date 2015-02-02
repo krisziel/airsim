@@ -1,11 +1,11 @@
 ## AIRPORTS SEED ##
-Airport.create(iata:"MLE",citycode:"MLE",name:"Male International Airport",city:"Male",country:"Maldives",population:,slots_total:,slots_available:,latitude:4.187475,longitude:73.530782,routes:0,flights:0)
-Airport.create(iata:"SIN",citycode:"SIN",name:"Changi International Airport",city:"Singapore",country:"Singapore",population:,slots_total:,slots_available:,latitude:1.361173,longitude:103.990201,routes:0,flights:0)
-Airport.create(iata:"DWC",citycode:"DXB",name:"Dubai World Central - Al Maktoum International Airport",city:"Dubai",country:"United Arab Emirates",population:,slots_total:,slots_available:,latitude:24.892845,longitude:55.162467,routes:0,flights:0)
-Airport.create(iata:"DXB",citycode:"DXB",name:"Dubai Airport",city:"Dubai",country:"United Arab Emirates",population:,slots_total:,slots_available:,latitude:25.248664,longitude:55.352916,routes:0,flights:0)
-Airport.create(iata:"AUH",citycode:"AUH",name:"Abu Dhabi International Airport",city:"Abu Dhabi",country:"United Arab Emirates",population:,slots_total:,slots_available:,latitude:24.426912,longitude:54.645974,routes:0,flights:0)
-Airport.create(iata:"KWI",citycode:"KWI",name:"Kuwait International Airport",city:"Kuwait",country:"Kuwait",population:,slots_total:,slots_available:,latitude:29.240116,longitude:47.971251,routes:0,flights:0)
-Airport.create(iata:"HKG",citycode:"HKG",name:"Hong Kong International Airport",city:"Hong Kong",country:"Hong Kong",population:,slots_total:,slots_available:,latitude:22.315248,longitude:113.93649,routes:0,flights:0)
+Airport.create(iata:"MLE",citycode:"MLE",name:"Male International Airport",city:"Male",country:"Maldives",population:1000000,slots_total:1989,slots_available:1213,latitude:4.187475,longitude:73.530782,routes:0,flights:0,display:1)
+Airport.create(iata:"SIN",citycode:"SIN",name:"Changi International Airport",city:"Singapore",country:"Singapore",population:1000000,slots_total:1989,slots_available:1213,latitude:1.361173,longitude:103.990201,routes:0,flights:0,display:1)
+Airport.create(iata:"DWC",citycode:"DXB",name:"Dubai World Central - Al Maktoum International Airport",city:"Dubai",country:"United Arab Emirates",population:1000000,slots_total:1989,slots_available:1213,latitude:24.892845,longitude:55.162467,routes:0,flights:0,display:1)
+Airport.create(iata:"DXB",citycode:"DXB",name:"Dubai Airport",city:"Dubai",country:"United Arab Emirates",population:1000000,slots_total:1989,slots_available:1213,latitude:25.248664,longitude:55.352916,routes:0,flights:0,display:1)
+Airport.create(iata:"AUH",citycode:"AUH",name:"Abu Dhabi International Airport",city:"Abu Dhabi",country:"United Arab Emirates",population:1000000,slots_total:1989,slots_available:1213,latitude:24.426912,longitude:54.645974,routes:0,flights:0,display:1)
+Airport.create(iata:"KWI",citycode:"KWI",name:"Kuwait International Airport",city:"Kuwait",country:"Kuwait",population:1000000,slots_total:1989,slots_available:1213,latitude:29.240116,longitude:47.971251,routes:0,flights:0,display:1)
+Airport.create(iata:"HKG",citycode:"HKG",name:"Hong Kong International Airport",city:"Hong Kong",country:"Hong Kong",population:1000000,slots_total:1989,slots_available:1213,latitude:22.315248,longitude:113.93649,routes:0,flights:0,display:1)
 
 ## ROUTES SEED ##
 Route.create(origin_id:1,destination_id:1,demand:900,demand_y:670,price_y:500,demand_p:110,price_p:1500,demand_j:110,price_j:3500,demand_f:10,price_f:5000)
@@ -48,15 +48,15 @@ Aircraft.create(name:"737-900ER",manufacturer:"Boeing",iata:"73E",capacity:210,s
 Aircraft.create(name:"A350-900",manufacturer:"Airbus",iata:"359",capacity:450,speed:550,turn_time:80,price:290000000,discount:2,fuel_capacity:40000,range:9500,sqft:3300)
 
 ## SEATS SEED ##
-Seat.create(class:"y",name:"Economy",cost:500,rating:7,sqft:4.5)
-Seat.create(class:"p",name:"Premium Economy",cost:1000,rating:9,sqft:7)
-Seat.create(class:"p",name:"Economy Plus",cost:700,rating:7,sqft:5)
-Seat.create(class:"j",name:"Recliner",cost:5000,rating:7,sqft:11)
-Seat.create(class:"j",name:"Basic Lie Flat",cost:7000,rating:9,sqft:12)
-Seat.create(class:"j",name:"Herringbone",cost:10000,rating:10,sqft:14)
-Seat.create(class:"f",name:"Lie Flat",cost:25000,rating:7,sqft:24)
-Seat.create(class:"f",name:"Open Suite",cost:40000,rating:9,sqft:30)
-Seat.create(class:"f",name:"Enclosed Suite",cost:50000,rating:10,sqft:30)
+Seat.create(service_class:"y",name:"Economy",cost:500,rating:7,sqft:4.5)
+Seat.create(service_class:"p",name:"Premium Economy",cost:1000,rating:9,sqft:7)
+Seat.create(service_class:"p",name:"Economy Plus",cost:700,rating:7,sqft:5)
+Seat.create(service_class:"j",name:"Recliner",cost:5000,rating:7,sqft:11)
+Seat.create(service_class:"j",name:"Basic Lie Flat",cost:7000,rating:9,sqft:12)
+Seat.create(service_class:"j",name:"Herringbone",cost:10000,rating:10,sqft:14)
+Seat.create(service_class:"f",name:"Lie Flat",cost:25000,rating:7,sqft:24)
+Seat.create(service_class:"f",name:"Open Suite",cost:40000,rating:9,sqft:30)
+Seat.create(service_class:"f",name:"Enclosed Suite",cost:50000,rating:10,sqft:30)
 
 ## USER AIRCRAFT SEED ##
 UserAircraft.create(user_id:1,aircraft_id:1,age:1,aircraft_config:'{"y":{"seats":300,"seat_id":1},"p":{"seats":70,"seat_id":2},"j":{"seats":80,"seat_id":6},"f":{"seats":10,"seat_id":9}}')

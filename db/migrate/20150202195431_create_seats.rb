@@ -1,7 +1,7 @@
 class CreateSeats < ActiveRecord::Migration
   def change
     create_table :seats do |t|
-      t.string :class
+      t.string :service_class
       t.string :name
       t.integer :cost
       t.integer :rating

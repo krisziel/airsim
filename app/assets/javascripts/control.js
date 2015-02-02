@@ -5,7 +5,7 @@ function createAirportList() {
     var airportRow = '<div class="content">';
     airportRow += '<div>' + airport.name + ' (' + airport.iata + ')</div>';
     airportRow += '<div>' + airport.city + ', ' + airport.country + '</div>';
-    airportRow += '<div>Population: ' + airport.population + '</div>';
+    airportRow += '<div>Population: ' + comma(airport.population) + '</div>';
     airportRow += '<div>Slots: '+ comma(airport.slots_total) + ' (' + comma(airport.slots_available) + ' available)</div>';
     // airportRow += '<i class="info circle icon"></i>';
     var thisAirport = $('<a/>',{
