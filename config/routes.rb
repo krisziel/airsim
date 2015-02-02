@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   ## AIRPORTS ##
   get 'airports/scrape/:country' => 'airports#scrape'
   get 'airports/' => 'airports#all'
+  get 'airports/seed' => 'airports#seed'
   get 'airports/:iata' => 'airports#data'
   patch 'airports/:iata/' => 'airports#update'
 

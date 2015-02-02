@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201012911) do
+ActiveRecord::Schema.define(version: 20150202182738) do
 
   create_table "aircraft_capacities", force: true do |t|
     t.integer "aircraft_id"
@@ -29,9 +29,10 @@ ActiveRecord::Schema.define(version: 20150201012911) do
     t.integer "price"
     t.integer "discount"
     t.integer "fuel_capacity"
-    t.integer "hourly_cost"
+    t.integer "fuel_burn"
     t.integer "range"
     t.integer "cargo"
+    t.integer "sqft"
   end
 
   create_table "airports", force: true do |t|
@@ -86,6 +87,8 @@ ActiveRecord::Schema.define(version: 20150201012911) do
     t.integer "user_id"
     t.integer "game_id"
     t.integer "aircraft_id"
+    t.string  "loads"
+    t.string  "profit"
   end
 
   create_table "routes", force: true do |t|
@@ -103,6 +106,17 @@ ActiveRecord::Schema.define(version: 20150201012911) do
     t.float   "y_elasticity"
     t.float   "j_elasticity"
     t.float   "f_elasticity"
+    t.float   "p_elasticity"
+  end
+
+  create_table "seats", force: true do |t|
+    t.string   "class"
+    t.string   "name"
+    t.integer  "cost"
+    t.integer  "rating"
+    t.integer  "sqft"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_aircrafts", force: true do |t|
@@ -113,6 +127,7 @@ ActiveRecord::Schema.define(version: 20150201012911) do
     t.integer "seats_p"
     t.integer "seats_j"
     t.integer "seats_f"
+    t.string  "aircraft_config"
   end
 
   create_table "users", force: true do |t|

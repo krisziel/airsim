@@ -119,9 +119,9 @@ function loadExistingRoute(id) {
     var profit = (flight.revenue - flight.cost);
     flight.loadFactor = 80; ///// Needs to be added to table
     if(profit >= 0) {
-      var profitString = '(<span class="GREEDColor">$' + comma(profit) + ' profit</span>)';
+      var profitString = '(<span class="greenColor">$' + comma(profit) + ' profit</span>)';
     } else {
-      var profitString = '(<span class="redColor">$' + comma(profit) + ' loss</span>)';
+      var profitString = '(<span class="redColor">$' + comma(Math.abs(profit)) + ' loss</span>)';
     }
     panel += '<a class="step" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + aircrafts[flight.aircraft_id].fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.loadFactor + '% Load Factor ' + profitString + '</div></div></a>';
   }
@@ -130,6 +130,7 @@ function loadExistingRoute(id) {
   panel += '<div class="flight-info">';
   panel += '</div>';
   panel += '</div>';
+  $('#routePanel').remove();
   $('body').append(panel);
   $('.flight-list').on('click','.step',function(){
     loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
@@ -143,7 +144,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
   if(profit >= 0) {
     var profitString = '<div class="row greenColor"><span class="label">Weekly Profit:</span> $' + comma(profit) + '</div>';
   } else {
-    var profitString = '<div class="row redColor"><span class="label">Weekly Loss:</span> $' + comma(profit) + '</div>';
+    var profitString = '<div class="row redColor"><span class="label">Weekly Loss:</span> $' + comma(Math.abs(profit)) + '</div>';
   }
   var panel = '<div class="row-container">';
   panel += '<div class="row"><span class="label">Aircraft:</span> ' + aircrafts[flight.aircraft_id].fullName + '</div>';
@@ -151,7 +152,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
   panel += '<div class="row"><span class="label">Flight Time:</span> ' + minutesToHours(flight.duration) + '</div>';
   panel += profitString;
   // panel += '<div class="row"><span class="label">Deployed Aircraft:</span> <span id="deployedAircraft">1</span><input name="deployed-aircraft" type="range" class="frequencies"></div>';
-  panel += '<div class="row"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">' + flight.frequencies + '</span><input name="weekly-frequencies" type="range" class="frequencies"></div>';
+  panel += '<div class="row"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">' + flight.frequencies + '</span><input name="weekly-frequencies" type="range" class="frequencies" min="1" max="' + maxFrequencies(flight.duration,flight.aircraft_id) + '" value="' + flight.frequencies + '"></div>';
   panel += '</div>';
   panel += '<div class="tab">';
   panel += '<div class="ui secondary menu">';
@@ -165,7 +166,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
     panel += '<div class="row"><span class="label">Capacity:</span> 8 Seats</div>';
     panel += '<div class="row"><span class="label">Load Factor:</span> 52%</div>';
     panel += '<div class="row"><span class="label">Weekly Profit:</span> $40,000</div>';
-    panel += '<div class="row"><span class="label">Fare:</span> $<span id="fare">' + comma(value) + '</span><input name="fare" type="range"></div>';
+    panel += '<div class="row"><span class="label">Fare:</span> $<span id="' + key + 'fare">' + comma(value) + '</span><input name="' + key + 'fare" type="range" value="' + value + '" class="fareRange"></div>';
     panel += '</div>';
   });
   panel += '<div class="ui tab segment" data-tab="business">';
@@ -183,7 +184,18 @@ function loadFlightInfo(flightid, routeid, flighti) {
   panel += '<div class="ui red button">Cancel Flight</div>';
   panel += '</div>';
   $('.flight-info').html(panel);
+  $('.frequencies').on('mousemove',function(){
+    $('#weeklyFrequencies').html($(this).val());
+  });
+  $('.fareRange').on('mousemove',function(){
+    $('#' + $(this).attr("name")).html(comma($(this).val()));
+  });
   $('.route-panel').addClass('open');
+}
+
+function maxFrequencies(duration,aircraft) {
+  aircraft = aircrafts[aircraft];
+  return Math.floor(10080/(aircraft.turn_time+duration));
 }
 function minutesToHours(minutes) {
   var hours = Math.floor(minutes/60);
