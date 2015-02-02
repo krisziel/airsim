@@ -1,5 +1,172 @@
-.route-panel {
+/* .route-panel {
   z-index: 10009;
   position: absolute;
   background: #ffffff;
+  -webkit-border-radius: 5px;
+  border: 1px solid #000000;
+  -webkit-transition: all 1s;
+  overflow: hidden;
+  width: 300px;
+  margin: 0 0 0 -150px;
+  top: 150px;
+  left: 50%;
+  .airport {
+    float: left;
+    font-size: 10px;
+    width: 132px;
+    text-align: center;
+    padding: 0 5px;
+    span {
+      display: block;
+      font-size: 24px;
+    }
+  }
+  .fa-arrows-h {
+    font-size: 32px;
+    line-height: 30px;
+    text-align: center;
+    width: 35px;
+    float: left;
+  }
+  .route-list {
+    width: 300px;
+    height: 100%;
+  }
+  ul {
+    list-style: none;
+    margin: 5px 0 0 0;
+    padding: 0;
+    position: relative;
+    float: left;
+    width: 100%;
+    border-top: 1px solid #000000;
+    li {
+      position: relative;
+      padding: 2px 5px;
+      height: 42px;
+      border-bottom: 1px solid #000000;
+      * {
+        float: left;
+      }
+      .equipment {
+        width: 195px;
+      }
+      .frequencies {
+        width: 90px;
+        text-align: right;
+      }
+      &.selected {
+        background: #eeeeee;
+      }
+    }
+  }
+  .flight-info {
+    width: 300px;
+    top: 0px;
+    border-left: 1px solid #000000;
+    position: absolute;
+    left: 300px;
+    height: 100%;
+
+  }
+} */
+.route-panel {
+  z-index: 10009;
+  position: absolute;
+  -webkit-transition: all 1s;
+  overflow: hidden;
+  width: 300px;
+  margin: 0 0 0 -150px;
+  top: 150px;
+  left: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.3);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  &.open {
+    width: 600px;
+    margin-left: -300px;
+    .step {
+      -webkit-border-top-right-radius: 0 !important;
+      -moz-border-top-right-radius: 0 !important;
+      -ms-border-top-right-radius: 0 !important;
+      -o-border-top-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+      -webkit-border-bottom-right-radius: 0 !important;
+      -moz-border-bottom-right-radius: 0 !important;
+      -ms-border-bottom-right-radius: 0 !important;
+      -o-border-bottom-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+  }
+  .route-info {
+    width: 298px;
+    float: left;
+  }
+  .info {
+    margin-top: 5px;
+    .statistic {
+      margin: 0;
+      top: 0;
+      float: left;
+      width: 129px;
+      padding-bottom: 5px;
+      .value {
+        font-size: 42px;
+        line-height: 42px;
+      }
+      .label {
+        font-size: 11px;
+        line-height: 11px;
+      }
+    }
+    .resize.horizontal {
+      color: #000000;
+      font-size: 40px;
+      line-height: 45px;
+      text-align: center;
+      width: 40px;
+      float: left;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .flight-list {
+    width: 298px;
+    height: auto;
+    .step {
+      padding: 8px 12px !important;
+      &:first-child {
+        -webkit-border-top-left-radius: 0 !important;
+        -moz-border-top-left-radius: 0 !important;
+        -ms-border-top-left-radius: 0 !important;
+        -o-border-top-left-radius: 0 !important;
+        border-top-left-radius: 0 !important;
+        -webkit-border-top-right-radius: 0 !important;
+        -moz-border-top-right-radius: 0 !important;
+        -ms-border-top-right-radius: 0 !important;
+        -o-border-top-right-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+      }
+    }
+  }
+  .flight-info {
+    height: 100%;
+    width: 300px;
+    float: left;
+    border-left: 1px solid rgba(0,0,0,.3);
+    .tab {
+      margin: 4px 0 4px 2px;
+    }
+    .menu {
+      .item {
+        padding: 6px !important;
+        font-size: 12px;
+        margin: 2px;
+      }
+    }
+  }
 }

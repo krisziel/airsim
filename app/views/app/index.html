@@ -1,14 +1,69 @@
 <div id="control">
-  <ul class="tabs">
+  <!-- <ul class="tabs">
     <li id="airportTab" class="selected">Airport</li>
     <li id="aircraftTab">Aircraft</li>
     <li id="fareTab">Fare</li>
     <li id="routeTab">Route</li>
     <li>idk</li>
     <li id="settingsTab">Settings</li>
-  </ul>
-  <ul class="content" id="content">
+  </ul> -->
+  <div class="ui five item teal menu">
+    <a class="active item">A</a>
+    <a class="item">B</a>
+    <a class="item">C</a>
+    <a class="item">D</a>
+    <a class="item">E</a>
+  </div>
+  <div class="ui category search">
+    <div class="ui left icon input">
+      <i class="search icon" id="searchButton"></i>
+      <input class="prompt" type="text" placeholder="Airport Search" id="searchInput">
+    </div>
+  </div>
+  <div class="ui unordered steps" id="searchResults">
+    <a class="step active" id="tt1074638"><div class="content"><div class="title">Skyfall</div><div class="description">2012</div></div><i class="info circle icon"></i></a>
+  </div>
+  <ul class="content" id="content" style="display:none">
   </ul>
 </div>
 <div id="map">
+</div>
+<div class="route-panel open" id="routePanel">
+  <div class="route-info">
+    <div class="info">
+      <div class="ui statistic">
+        <div class="value">
+          JFK
+        </div>
+        <div class="label">
+          JFK International Airport
+        </div>
+      </div>
+      <i class="resize horizontal icon"></i>
+      <div class="ui statistic">
+        <div class="value">
+          IAH
+        </div>
+        <div class="label">
+          George Bush Intercontinental Airport
+        </div>
+      </div>
+    </div>
+    <div class="ui unordered steps flight-list" id="fff">
+      <a class="step active" id="tt1074638"><div class="content"><div class="title">Skyfall</div><div class="description">2012</div></div></a>
+    </div>
+  </div>
+  <div class="flight-info">
+    <div class="tab">
+      <div class="ui secondary menu">
+        <a class="item active" data-tab="first">First</a>
+        <a class="item" data-tab="business">Business</a>
+        <a class="item" data-tab="premium">Premium Economy</a>
+        <a class="item" data-tab="economy">Economy</a>
+      </div>
+      <div class="ui tab segment active" data-tab="first">
+        asdfghjk
+      </div>
+    </div>
+  </div>
 </div>

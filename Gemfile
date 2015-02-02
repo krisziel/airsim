@@ -13,6 +13,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'flightstats-flex', '0.4.0'
 gem 'dotenv-rails'
+gem 'semantic-ui-sass', github: 'doabit/semantic-ui-sass', branch: 'v1.0beta'
 # gem 'twitter'
 
 group :development do

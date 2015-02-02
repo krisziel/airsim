@@ -97,17 +97,17 @@ function loadNewRoute(args) {
 }
 function loadExistingRoute(id) {
   var route = activeRoutes[id];
-  console.log(route);
   var flights = route.flights;
   var route = route.route;
-  var routePanel = '<div class="route-panel" id="routePanel">';
+  var routePanel = '<div class="route-panel" id="routePanel" data-routeid="' + route.id + '">';
+  routePanel += '<div class="route-list">';
   routePanel += '<div class="airport"><span>' + route.origin.iata + '</span>' + route.origin.name + '</div>';
   routePanel += '<span class="fa fa-arrows-h"></span>';
   routePanel += '<div class="airport"><span>' + route.dest.iata + '</span>' + route.dest.name + '</div>';
-  routePanel += '<ul>';
+  routePanel += '<ul id="route' + route.id + '">';
   for(i=0;i<flights.length;i++) {
     var flight = flights[i];
-    var flightContent = '<li class="flight' + flight.id + '" class="flight" data-flightid="' + flight.id + '">';
+    var flightContent = '<li class="flight" id="flight' + flight.id + '" class="flight" data-flightid="' + flight.id + '">';
     var profit = (flight.revenue - flight.cost);
     var profitColor = 'colorBlack';
     if(profit > 0) {
@@ -117,16 +117,27 @@ function loadExistingRoute(id) {
     }
     flightContent += '<div class="equipment">' + aircrafts[flight.aircraft_id].fullName + '</div>';
     flightContent += '<div class="frequencies">' + flight.frequencies + 'x weekly</div>';
-    flightContent += '<div class="revenue">Revenue: $' + comma(flight.revenue) + '</div>';
-    flightContent += '<div class="revenue">Cost: $' + comma(flight.cost) + '</div>';
-    flightContent += '<div class="revenue ' + profitColor + '">Profit: $' + comma(profit) + '</div>';
+    flightContent += '<div class="profit ' + profitColor + '">Profit: $' + comma(profit) + '</div>';
     flightContent += '</li>';
     routePanel += flightContent;
   }
   routePanel += '</ul>';
+  routePanel += '</div>';
+  if($('#routePanel')) {
+    $('#routePanel').remove();
+  }
   $('body').append(routePanel);
   $('#route' + route.id).on('click','.flight',function(){
-    console.log($(this).attr('data-flightid'));
     loadFlightInfo($(this).attr('data-flightid'));
   });
+}
+function loadFlightInfo(id) {
+  $('.flight.selected').removeClass('selected');
+  $('.flight#flight' + id).addClass('selected');
+  $('.flight-info').remove();
+  var infoContent = '<div class="flight-info">';
+  infoContent += '<div>Boeing 777-300ER (550 seats)</div>';
+  infoContent += '<div>Y: 400; PY: 50; J: 90; F: 10</div>';
+  infoContent += '</div>';
+  $('#routePanel').append(infoContent).css({width:600,marginLeft:-300});
 }
