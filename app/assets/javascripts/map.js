@@ -7,7 +7,9 @@ function loadMap(){
   L.mapbox.accessToken = 'pk.eyJ1Ijoia3ppZWwiLCJhIjoiaVROWDVNcyJ9.hxCBMTpnmZjG8X_03FYMBg';
   var map = L.mapbox.map('map', 'kziel.l04pnpnd', {
     attributionControl: false,
-    infoControl: true
+    infoControl: true,
+    minZoom:3,
+    maxZoom:10
   })
   .setView([13.6296633,77.5570161],4);
   // .setView([37.618,-122.375], 6);

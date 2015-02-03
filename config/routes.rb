@@ -21,5 +21,6 @@ Rails.application.routes.draw do
 
   ## AIRCRAFT ##
   get 'aircrafts/' => 'aircrafts#all'
+  get 'aircrafts/airline' => 'aircrafts#airline'
 
 end

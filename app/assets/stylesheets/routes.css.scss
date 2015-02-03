@@ -186,6 +186,16 @@
       margin: 6px;
     }
   }
+  .dropdown {
+    width: 100%;
+  }
+}
+.noclass {
+  display: none;
+  height: 91px;
+  text-align: center;
+  line-height: 91px;
+  font-weight: bold;
 }
 .row {
   display: block;

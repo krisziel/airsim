@@ -21,10 +21,12 @@ class FlightsController < ApplicationController
       :aircraft_config => ac_config
     }
     full_aircraft = {
-      :type => flight.aircraft,
+      :id => flight.user_aircraft_id,
+      :type => flight.user_aircraft.aircraft,
       :config => user_aircraft
     }
     full_flight = {
+      :id => flight.id,
       :route_id => flight.route_id,
       :duration => flight.duration,
       :frequencies => flight.frequencies,

@@ -5,12 +5,39 @@ class RoutesController < ApplicationController
     # flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
+      flightJSON = {
+        :aircraft_id => flight.user_aircraft.aircraft_id,
+        :cost => flight.cost,
+        :distance => flight.distance,
+        :duration => flight.duration,
+        :fare => JSON.parse(flight.fare),
+        :frequencies => flight.frequencies,
+        :id => flight.id,
+        :loads => JSON.parse(flight.loads),
+        :profit => JSON.parse(flight.profit),
+        :revenue => flight.revenue,
+        :route_id => flight.route_id,
+        :user_aircraft => flight.user_aircraft_id
+      }
+      route = Route.find(flight.route_id)
+      routeJSON = {
+        :id => route.id,
+        :origin_id => route.origin_id,
+        :destination_id => route.destination_id,
+        :demand => {
+          :total => route.demand,
+          :unfilled => unfilled_demand(route.id)
+        },
+        :minfare => JSON.parse(route.minfare),
+        :maxfare => JSON.parse(route.maxfare),
+        :distance => route.distance
+      }
       if @routes[flight.route_id]
-        @routes[flight.route_id][:flights].push(flight)
+        @routes[flight.route_id][:flights].push(flightJSON)
       else
         @routes[flight.route_id] = {
-          :route => Route.find(flight.route_id),
-          :flights => [flight]
+          :route => routeJSON,
+          :flights => [flightJSON]
         }
       end
     end
@@ -50,6 +77,9 @@ class RoutesController < ApplicationController
       Route.find(route.id).update(minfare:min.to_json,maxfare:max.to_json,distance:mi)
     end
     render json:routes
+  end
+
+  def unfilled_demand id
   end
 
   def gcm_distance loc1, loc2
