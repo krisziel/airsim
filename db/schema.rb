@@ -103,7 +103,6 @@ ActiveRecord::Schema.define(version: 20150203080835) do
     t.integer  "cost"
     t.integer  "airline_id"
     t.integer  "game_id"
-    t.integer  "aircraft_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "loads"

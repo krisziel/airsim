@@ -23,4 +23,7 @@ Rails.application.routes.draw do
   get 'aircrafts/' => 'aircrafts#all'
   get 'aircrafts/airline' => 'aircrafts#airline'
 
+  ## SEATS ##
+  get 'seats/' => 'seats#all'
+
 end

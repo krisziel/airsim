@@ -1,5 +1,6 @@
 var aircrafts = {};
 var userAircrafts = {};
+var seats = {};
 
 function loadAircraft() {
   $.getJSON('aircrafts/').done(function(data){
@@ -8,6 +9,7 @@ function loadAircraft() {
       aircrafts[value.id] = value;
     });
     loadUserAircraft();
+    loadSeats();
   });
 }
 function loadUserAircraft() {
@@ -40,4 +42,10 @@ function loadUnusedAircraft(range, type, defaultAircraft) {
     });
     return dropdown;
   }
+}
+
+function loadSeats() {
+  $.getJSON('seats/').done(function(data){
+    seats = data;
+  });
 }
