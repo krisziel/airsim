@@ -31,12 +31,16 @@ class FlightsController < ApplicationController
       :performance => {
         :load => JSON.parse(flight.loads),
         :profit => JSON.parse(flight.profit),
-        :fare => JSON.parse(flight.fare),
+        :fare => JSON.parse(flight.fare)
       },
       :revenue => flight.revenue,
       :cost => flight.cost,
       :aircraft => full_aircraft,
-      :distance => flight.distance
+      :route => {
+        :minFare => JSON.parse(flight.route.minfare),
+        :maxFare => JSON.parse(flight.route.maxfare),
+        :distance => flight.route.distance
+      }
     }
     render json: full_flight
   end

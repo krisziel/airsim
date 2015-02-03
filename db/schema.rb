@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203065412) do
+ActiveRecord::Schema.define(version: 20150203080835) do
 
   create_table "aircraft_capacities", force: true do |t|
     t.integer "aircraft_id"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20150203065412) do
     t.integer "range"
     t.integer "cargo"
     t.integer "sqft"
+  end
+
+  create_table "airlines", force: true do |t|
+    t.string   "name"
+    t.string   "iata"
+    t.integer  "hub"
+    t.integer  "game_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "airports", force: true do |t|
@@ -88,6 +98,15 @@ ActiveRecord::Schema.define(version: 20150203065412) do
     t.integer "aircraft_id"
     t.string  "loads"
     t.string  "profit"
+  end
+
+  create_table "games", force: true do |t|
+    t.integer  "year"
+    t.integer  "month"
+    t.integer  "airlines"
+    t.string   "region"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "routes", force: true do |t|

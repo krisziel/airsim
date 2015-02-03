@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   ## ROUTES ##
   get 'routes/' => 'routes#all'
+  get 'routes/distance' => 'routes#distance'
   get 'routes/:origin/:destination' => 'routes#info'
 
   ## FLIGHTS ##
