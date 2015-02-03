@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202195431) do
+ActiveRecord::Schema.define(version: 20150203065412) do
 
   create_table "aircraft_capacities", force: true do |t|
     t.integer "aircraft_id"
@@ -81,7 +81,6 @@ ActiveRecord::Schema.define(version: 20150202195431) do
     t.integer "rating"
     t.integer "distance"
     t.integer "passengers"
-    t.integer "integer"
     t.integer "revenue"
     t.integer "cost"
     t.integer "user_id"
@@ -107,6 +106,9 @@ ActiveRecord::Schema.define(version: 20150202195431) do
     t.float   "j_elasticity"
     t.float   "f_elasticity"
     t.float   "p_elasticity"
+    t.string  "minfare"
+    t.string  "maxfare"
+    t.integer "distance"
   end
 
   create_table "seats", force: true do |t|

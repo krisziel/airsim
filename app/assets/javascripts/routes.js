@@ -187,8 +187,6 @@ function loadFlightInfo(flightid, routeid, flighti) {
     $('.route-panel').addClass('open');
     $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
     $('#classMenu').on('click','a',function(){
-      console.log("RORY SO BEAUTIFUL");
-      console.log($(this).closest('.tab'));
       $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
       $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
     });
@@ -197,18 +195,20 @@ function loadFlightInfo(flightid, routeid, flighti) {
 function flightCabinInfo(flight, service_class) {
   var cabin = flight.aircraft.config.aircraft_config[service_class];
   var performance = flight.performance;
+  var minFare = (flight.route[service_class].minFare);
+  var maxFare = (flight.route[service_class].maxFare);
   var panel = '<div class="ui tab segment" data-tab="' + service_class + '">';
   panel += '<div class="row"><span class="label">Seat Type:</span> ' + cabin.seat.name + ' Seats</div>';
-  panel += '<div class="row"><span class="label">Capacity:</span> ' + cabin.seats + ' Seats</div>';
+  panel += '<div class="row"><span class="label">Capacity:</span> ' + cabin.seats + '</div>';
   panel += '<div class="row"><span class="label">Load Factor:</span> ' + performance.load[service_class] + '%</div>';
-  panel += '<div class="row"><span class="label">Weekly Profit:</span> $' + performance.profit[service_class] + '</div>';
-  panel += '<div class="row"><span class="label">Fare:</span> $<span id="' + service_class + 'fare">' + comma(performance.fare[service_class]) + '</span><input name="' + service_class + 'fare" type="range" value="' + performance.fare[service_class] + '" class="fareRange"></div>';
+  panel += '<div class="row"><span class="label">Weekly Profit:</span> $' + comma(performance.profit[service_class]) + '</div>';
+  panel += '<div class="row"><span class="label">Fare:</span> $<span id="' + service_class + 'fare">' + comma(performance.fare[service_class]) + '</span><input name="' + service_class + 'fare" type="range" value="' + performance.fare[service_class] + '" class="fareRange" minvalue="' + minFare + '" maxvalue="' + maxFare + '"></div>';
   panel += '</div>';
   return panel;
 }
 
 function maxFrequencies(duration,turn_time) {
-  return Math.floor(10080/(turn_time+duration));
+  return Math.floor(10080/(turn_time+duration)/2);
 }
 function minutesToHours(minutes) {
   var hours = Math.floor(minutes/60);

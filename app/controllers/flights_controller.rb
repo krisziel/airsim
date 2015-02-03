@@ -35,7 +35,8 @@ class FlightsController < ApplicationController
       },
       :revenue => flight.revenue,
       :cost => flight.cost,
-      :aircraft => full_aircraft
+      :aircraft => full_aircraft,
+      :distance => flight.distance
     }
     render json: full_flight
   end
