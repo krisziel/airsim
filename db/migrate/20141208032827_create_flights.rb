@@ -13,9 +13,10 @@ class CreateFlights < ActiveRecord::Migration
       t.integer :integer
       t.integer :revenue
       t.integer :cost
-      t.integer :user_id
+      t.integer :airline_id
       t.integer :game_id
       t.integer :aircraft_id
+      t.timestamps
     end
   end
 end

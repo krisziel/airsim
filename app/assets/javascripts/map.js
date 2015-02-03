@@ -11,7 +11,7 @@ function loadMap(){
   })
   .setView([13.6296633,77.5570161],4);
   // .setView([37.618,-122.375], 6);
-  map.setMaxBounds([[-90,-180], [90,180]]);
+  // map.setMaxBounds([[-90,-180], [90,180]]);
   globalMap = map;
   addAirports(map);
 }

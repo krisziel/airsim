@@ -33,7 +33,7 @@ class AirportsController < ApplicationController
   end
 
   def seed
-    airportsarr = Airport.all
+    airportsarr = Airport.where(:display => 1)
     airportsarr.each do |airport|
       routes = Route.where("origin_id=? OR destination_id=?", airport.id, airport.id).length
       flights = Flight.count(airport.id)

@@ -13,6 +13,7 @@ class CreateAircraft < ActiveRecord::Migration
       t.integer :hourly_cost
       t.integer :range
       t.integer :cargo
+      t.timestamps
     end
   end
 end

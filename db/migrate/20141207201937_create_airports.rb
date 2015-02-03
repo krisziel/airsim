@@ -15,6 +15,7 @@ class CreateAirports < ActiveRecord::Migration
       t.string :longitude
       t.integer :business_demand
       t.integer :leisure_demand
+      t.timestamps
     end
   end
 end

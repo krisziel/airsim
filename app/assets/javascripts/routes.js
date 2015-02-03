@@ -151,7 +151,8 @@ function loadFlightInfo(flightid, routeid, flighti) {
       var profitString = '<div class="row redColor"><span class="label">Weekly Loss:</span> $' + comma(Math.abs(profit)) + '</div>';
     }
     var panel = '<div class="row-container">';
-    panel += '<div class="row"><span class="label">Aircraft:</span> ' + aircraft.manufacturer + ' ' + aircraft.name + '</div>';
+    // panel += '<div class="row"><span class="label">Aircraft:</span> ' + aircraft.manufacturer + ' ' + aircraft.name + '</div>';
+    panel += '<div class="row"><div class="ui selection dropdown"><div class="default text">' + aircraft.manufacturer + ' ' + aircraft.name + '</div><i class="dropdown icon"></i><input name="hidden-field" type="hidden"><div class="menu"><div class="item" data-value="1">' + aircraft.manufacturer + ' ' + aircraft.name + ' (8/80/60/220)</div><div class="item" data-value="2">Choice 2</div></div></div></div>';
     panel += '<div class="row"><span class="label">Flight Length:</span> ' + comma(flight.route.distance) + ' Miles</div>';
     panel += '<div class="row"><span class="label">Flight Time:</span> ' + minutesToHours(flight.duration) + '</div>';
     panel += profitString;
@@ -186,6 +187,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
     });
     $('.route-panel').addClass('open');
     $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
+    $('.ui.dropdown').dropdown();
     $('#classMenu').on('click','a',function(){
       $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
       $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
@@ -198,7 +200,7 @@ function flightCabinInfo(flight, service_class) {
   var minFare = (flight.route.minFare[service_class]);
   var maxFare = (flight.route.maxFare[service_class]);
   var panel = '<div class="ui tab segment" data-tab="' + service_class + '">';
-  panel += '<div class="row"><span class="label">Seat Type:</span> ' + cabin.seat.name + ' Seats</div>';
+  panel += '<div class="row"><span class="label">Seat Type:</span> ' + cabin.seat.name + '</div>';
   panel += '<div class="row"><span class="label">Capacity:</span> ' + cabin.seats + '</div>';
   panel += '<div class="row"><span class="label">Load Factor:</span> ' + performance.load[service_class] + '%</div>';
   panel += '<div class="row"><span class="label">Weekly Profit:</span> $' + comma(performance.profit[service_class]) + '</div>';

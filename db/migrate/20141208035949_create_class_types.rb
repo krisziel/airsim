@@ -7,6 +7,7 @@ class CreateClassTypes < ActiveRecord::Migration
       t.float :ratio
       t.float :premium
       t.float :cost
+      t.timestamps
     end
   end
 end

@@ -88,7 +88,6 @@ function loadAirport(marker) {
   airportPopup += '<div class="button routes-btn">Show Routes</div>';
   airportPopup += '</div>';
   var popup = L.popup({
-    keepInView:true,
     offset:L.point(0,-22),
     closeOnClick:false
   }).setLatLng(marker.getLatLng()).setContent(airportPopup).openOn(globalMap);

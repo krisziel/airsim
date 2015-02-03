@@ -42,10 +42,10 @@ class RoutesController < ApplicationController
         :f => (mi*1.0*0.3).round
       }
       max = {
-        :y => (mi*0.1*2.0).round,
-        :p => (mi*0.3*2.0).round,
-        :j => (mi*0.5*2.0).round,
-        :f => (mi*1.0*2.0).round
+        :y => (mi*0.1*2.0).round+1000,
+        :p => (mi*0.3*2.0).round+1000,
+        :j => (mi*0.5*2.0).round+1000,
+        :f => (mi*1.0*2.0).round+1000
       }
       Route.find(route.id).update(minfare:min.to_json,maxfare:max.to_json,distance:mi)
     end

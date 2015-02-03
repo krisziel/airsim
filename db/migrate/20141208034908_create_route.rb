@@ -15,6 +15,7 @@ class CreateRoute < ActiveRecord::Migration
       t.float :y_elasticity
       t.float :j_elasticity
       t.float :f_elasticity
+      t.timestamps
     end
   end
 end

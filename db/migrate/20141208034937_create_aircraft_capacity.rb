@@ -4,6 +4,7 @@ class CreateAircraftCapacity < ActiveRecord::Migration
       t.integer :aircraft_id
       t.integer :capacity
       t.integer :class_config
+      t.timestamps
     end
   end
 end

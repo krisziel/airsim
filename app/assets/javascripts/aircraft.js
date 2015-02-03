@@ -8,3 +8,17 @@ function loadAircraft() {
     });
   });
 }
+
+function loadUnusedAircraft(range, type) {
+  var list = [];
+  $.each(aircrafts,function(key,value){
+    if((value.range >= range)&&(value.status === "unused")) {
+      list.push(value);
+    }
+  });
+  if(type === "dropdown") {
+    $.each(list,function(i,value){
+
+    });
+  }
+}

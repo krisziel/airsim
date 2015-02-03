@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require semantic-ui
 
 $(document).ready(function(){
   sizeMap();
