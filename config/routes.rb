@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   ## FLIGHTS ##
   get 'flights/' => 'flights#all'
+  get 'flights/:id' => 'flights#info'
   get 'flights/:origin/:destination' => 'flights#info'
 
   ## AIRCRAFT ##

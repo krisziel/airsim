@@ -2,7 +2,7 @@ class RoutesController < ApplicationController
 
   def all
     flights = Flight.all
-    # flights = Flight.where(:user_id => user_id)
+    # flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
       if @routes[flight.route_id]

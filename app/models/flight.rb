@@ -1,8 +1,6 @@
 class Flight < ActiveRecord::Base
-
-  def full_info
-
-  end
+  belongs_to :aircraft
+  belongs_to :user_aircraft
 
   def count airport
     routes = Route.where("origin=? OR destination=?", airport.id, airport.id)

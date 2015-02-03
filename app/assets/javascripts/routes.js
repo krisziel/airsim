@@ -1,5 +1,6 @@
 var allRoutes = {};
 var activeRoutes = {};
+var selectedFlight;
 
 function drawRoutes() {
   $.getJSON('routes/').done(function(data) {
@@ -137,65 +138,77 @@ function loadExistingRoute(id) {
   });
 }
 function loadFlightInfo(flightid, routeid, flighti) {
-  var flight = activeRoutes[routeid].flights[flighti];
-  $('.flight-list > .step.active').removeClass('active');
-  $('.step#flight' + flight.id).addClass('active');
-  var profit = (flight.revenue - flight.cost);
-  if(profit >= 0) {
-    var profitString = '<div class="row greenColor"><span class="label">Weekly Profit:</span> $' + comma(profit) + '</div>';
-  } else {
-    var profitString = '<div class="row redColor"><span class="label">Weekly Loss:</span> $' + comma(Math.abs(profit)) + '</div>';
-  }
-  var panel = '<div class="row-container">';
-  panel += '<div class="row"><span class="label">Aircraft:</span> ' + aircrafts[flight.aircraft_id].fullName + '</div>';
-  panel += '<div class="row"><span class="label">Flight Length:</span> ' + comma(flight.distance) + ' Miles</div>';
-  panel += '<div class="row"><span class="label">Flight Time:</span> ' + minutesToHours(flight.duration) + '</div>';
-  panel += profitString;
-  // panel += '<div class="row"><span class="label">Deployed Aircraft:</span> <span id="deployedAircraft">1</span><input name="deployed-aircraft" type="range" class="frequencies"></div>';
-  panel += '<div class="row"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">' + flight.frequencies + '</span><input name="weekly-frequencies" type="range" class="frequencies" min="1" max="' + maxFrequencies(flight.duration,flight.aircraft_id) + '" value="' + flight.frequencies + '"></div>';
-  panel += '</div>';
-  panel += '<div class="tab">';
-  panel += '<div class="ui secondary menu">';
-  panel += '<a class="item active" data-tab="f">First</a>';
-  panel += '<a class="item" data-tab="j">Business</a>';
-  panel += '<a class="item" data-tab="p">Premium Economy</a>';
-  panel += '<a class="item" data-tab="y">Economy</a>';
-  panel += '</div>';
-  $.each(flight.fare,function(key,value){
-    panel += '<div class="ui tab segment" data-tab="' + key + '">';
-    panel += '<div class="row"><span class="label">Capacity:</span> 8 Seats</div>';
-    panel += '<div class="row"><span class="label">Load Factor:</span> 52%</div>';
-    panel += '<div class="row"><span class="label">Weekly Profit:</span> $40,000</div>';
-    panel += '<div class="row"><span class="label">Fare:</span> $<span id="' + key + 'fare">' + comma(value) + '</span><input name="' + key + 'fare" type="range" value="' + value + '" class="fareRange"></div>';
+  $.getJSON('flights/' + flightid).done(function(data){
+    selectedFlight = data;
+    var flight = data;
+    var aircraft = flight.aircraft.type;
+    $('.flight-list > .step.active').removeClass('active');
+    $('.step#flight' + flight.id).addClass('active');
+    var profit = (flight.revenue - flight.cost);
+    if(profit >= 0) {
+      var profitString = '<div class="row greenColor"><span class="label">Weekly Profit:</span> $' + comma(profit) + '</div>';
+    } else {
+      var profitString = '<div class="row redColor"><span class="label">Weekly Loss:</span> $' + comma(Math.abs(profit)) + '</div>';
+    }
+    var panel = '<div class="row-container">';
+    panel += '<div class="row"><span class="label">Aircraft:</span> ' + aircraft.manufacturer + ' ' + aircraft.name + '</div>';
+    panel += '<div class="row"><span class="label">Flight Length:</span> ' + comma(flight.distance) + ' Miles</div>';
+    panel += '<div class="row"><span class="label">Flight Time:</span> ' + minutesToHours(flight.duration) + '</div>';
+    panel += profitString;
+    // panel += '<div class="row"><span class="label">Deployed Aircraft:</span> <span id="deployedAircraft">1</span><input name="deployed-aircraft" type="range" class="frequencies"></div>';
+    panel += '<div class="row"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">' + flight.frequencies + '</span><input name="weekly-frequencies" type="range" class="frequencies" min="1" max="' + maxFrequencies(flight.duration,aircraft.turn_time) + '" value="' + flight.frequencies + '"></div>';
     panel += '</div>';
+    panel += '<div class="tab">';
+    panel += '<div class="ui secondary menu" id="classMenu">';
+    panel += '<a class="item active" data-tab="f">First</a>';
+    panel += '<a class="item" data-tab="j">Business</a>';
+    panel += '<a class="item" data-tab="p">Premium Economy</a>';
+    panel += '<a class="item" data-tab="y">Economy</a>';
+    panel += '</div>';
+    panel += flightCabinInfo(flight,"f");
+    panel += flightCabinInfo(flight,"j");
+    panel += flightCabinInfo(flight,"p");
+    panel += flightCabinInfo(flight,"y");
+    panel += '</div>';
+    panel += '<div class="ui buttons">';
+    panel += '<div class="ui button">Cancel</div>';
+    panel += '<div class="or"></div>';
+    panel += '<div class="ui positive button">Save</div>';
+    panel += '<div class="or"></div>';
+    panel += '<div class="ui red button">Cancel Flight</div>';
+    panel += '</div>';
+    $('.flight-info').html(panel);
+    $('.frequencies').on('mousemove',function(){
+      $('#weeklyFrequencies').html($(this).val());
+    });
+    $('.fareRange').on('mousemove',function(){
+      $('#' + $(this).attr("name")).html(comma($(this).val()));
+    });
+    $('.route-panel').addClass('open');
+    $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
+    $('#classMenu').on('click','a',function(){
+      console.log("RORY SO BEAUTIFUL");
+      console.log($(this).closest('.tab'));
+      $(this).addClass('active').closest('.ui.menu').find('.item').not($(this)).removeClass('active');
+      $(this).closest('.tab').find('div').addClass('open').not('[data-tab="' + $(this).data('tab') + '"]').removeClass('open');
+    });
   });
-  panel += '<div class="ui tab segment" data-tab="business">';
+}
+function flightCabinInfo(flight, service_class) {
+  var cabin = flight.aircraft.config.aircraft_config[service_class];
+  var performance = flight.performance;
+  var panel = '<div class="ui tab segment" data-tab="' + service_class + '">';
+  panel += '<div class="row"><span class="label">Seat Type:</span> ' + cabin.seat.name + ' Seats</div>';
+  panel += '<div class="row"><span class="label">Capacity:</span> ' + cabin.seats + ' Seats</div>';
+  panel += '<div class="row"><span class="label">Load Factor:</span> ' + performance.load[service_class] + '%</div>';
+  panel += '<div class="row"><span class="label">Weekly Profit:</span> $' + performance.profit[service_class] + '</div>';
+  panel += '<div class="row"><span class="label">Fare:</span> $<span id="' + service_class + 'fare">' + comma(performance.fare[service_class]) + '</span><input name="' + service_class + 'fare" type="range" value="' + performance.fare[service_class] + '" class="fareRange"></div>';
   panel += '</div>';
-  panel += '<div class="ui tab segment" data-tab="premium">';
-  panel += '</div>';
-  panel += '<div class="ui tab segment" data-tab="economy">';
-  panel += '</div>';
-  panel += '</div>';
-  panel += '<div class="ui buttons">';
-  panel += '<div class="ui button">Cancel</div>';
-  panel += '<div class="or"></div>';
-  panel += '<div class="ui positive button">Save</div>';
-  panel += '<div class="or"></div>';
-  panel += '<div class="ui red button">Cancel Flight</div>';
-  panel += '</div>';
-  $('.flight-info').html(panel);
-  $('.frequencies').on('mousemove',function(){
-    $('#weeklyFrequencies').html($(this).val());
-  });
-  $('.fareRange').on('mousemove',function(){
-    $('#' + $(this).attr("name")).html(comma($(this).val()));
-  });
-  $('.route-panel').addClass('open');
+  return panel;
 }
 
-function maxFrequencies(duration,aircraft) {
-  aircraft = aircrafts[aircraft];
-  return Math.floor(10080/(aircraft.turn_time+duration));
+function maxFrequencies(duration,turn_time) {
+  return Math.floor(10080/(turn_time+duration));
 }
 function minutesToHours(minutes) {
   var hours = Math.floor(minutes/60);
