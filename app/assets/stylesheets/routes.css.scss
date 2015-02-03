@@ -33,6 +33,11 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  .remove {
+    position: absolute;
+    left: 3px;
+    top: 3px;
+  }
   &.open {
     width: 600px;
     margin-left: -300px;

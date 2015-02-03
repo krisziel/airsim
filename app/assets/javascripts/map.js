@@ -9,7 +9,7 @@ function loadMap(){
     attributionControl: false,
     infoControl: true,
     minZoom:3,
-    maxZoom:10
+    maxZoom:14
   })
   .setView([13.6296633,77.5570161],4);
   // .setView([37.618,-122.375], 6);

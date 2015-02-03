@@ -101,6 +101,7 @@ function loadExistingRoute(id) {
   var flights = route.flights;
   var route = route.route;
   var panel = '<div class="route-panel" id="routePanel">';
+  panel += '<i class="icon remove"></i>'
   panel += '<div class="route-info" data-routeid="' + id + '">';
   panel += '<div class="info">';
   panel += '<div class="ui statistic">';
@@ -132,9 +133,16 @@ function loadExistingRoute(id) {
   panel += '</div>';
   $('#routePanel').remove();
   $('body').append(panel);
+  $('.route-panel .remove').on('click',function(){
+    closeRoutePanel();
+  });
   $('.flight-list').on('click','.step',function(){
     loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
   });
+}
+function closeRoutePanel() {
+  $('.route-panel').addClass('fadeOut');
+  setTimeout(function(){ $('.route-panel').remove(); },500);
 }
 function loadFlightInfo(flightid, routeid, flighti) {
   $.getJSON('flights/' + flightid).done(function(data){

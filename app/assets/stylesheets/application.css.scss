@@ -31,3 +31,15 @@
 .greenColor {
   color: #00dd00;
 }
+.fadeOut {
+  -webkit-animation: fadeout .5s; /* Chrome, Safari, Opera */
+  animation: fadeout .5s;
+}
+@-webkit-keyframes fadeout {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+@keyframes fadeout {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
