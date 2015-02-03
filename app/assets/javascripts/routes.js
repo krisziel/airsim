@@ -200,7 +200,7 @@ function updateCabinView(aircraftid) {
   var routeid = $('.route-info').data('routeid');
   var flight;
   $.each(activeRoutes[routeid].flights,function(i,value){
-    if(value.id === flightid) {
+    if(value.id == flightid) {
       flight = value;
     }
   });
