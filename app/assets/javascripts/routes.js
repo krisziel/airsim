@@ -6,8 +6,8 @@ function drawRoutes() {
   $.getJSON('routes/').done(function(data) {
     $.each(data,function(i,value){
       var route = value;
-      activeRoutes[value.route.id] = route;
-      drawRoute({origin:airports[route.route.origin_id],dest:airports[route.route.destination_id],type:'normal'});
+      activeRoutes[route.id] = route;
+      drawRoute({origin:airports[route.origin_id],dest:airports[route.destination_id],type:'normal'});
     });
   });
 }
@@ -79,52 +79,72 @@ function drawRoute(args) {
 function viewRoute(args) {
   var origin = airports[args.origin];
   var dest = airports[args.dest];
-  $.each(activeRoutes,function(i,value){
-    value.route.origin = airports[value.route.origin_id];
-    value.route.dest = airports[value.route.destination_id];
-    var routeDest = value.route.dest;
-    var routeOrigin = value.route.origin;
+  var exists = false;
+  var route_id;
+  $.each(activeRoutes,function(i,route){
+    route.origin = airports[route.origin_id];
+    route.dest = airports[route.destination_id];
+    var routeDest = route.dest;
+    var routeOrigin = route.origin;
     if(((routeOrigin.id === origin.id)&&(routeDest.id === dest.id))||((routeDest.id === origin.id)&&(routeOrigin.id === dest.id))) {
-      loadExistingRoute(value.route.id);
-    } else {
-      loadNewRoute({origin:origin.id,dest:dest.id});
+      exists = true;
+      route_id = route.id;
     }
   });
+  if(exists) {
+    loadExistingRoute(route_id);
+  } else {
+    loadNewRoute({origin:origin.id,dest:dest.id});
+  }
 }
 function loadNewRoute(args) {
-  $.getJSON('routes/' + args.origin + '/' + args.destination).done(function(data){
-
+  console.log('I <3 rory');
+  $.getJSON('routes/' + args.origin + '/' + args.dest).done(function(data){
+    showRoutePanel(data);
   });
 }
 function loadExistingRoute(id) {
   var route = activeRoutes[id];
-  var flights = route.flights;
-  var route = route.route;
+  $.getJSON('/routes/' + id).done(function(data){
+    showRoutePanel(data);
+  });
+}
+function showRoutePanel(data) {
+  var route = data;
+  var origin = airports[route.origin_id];
+  var dest = airports[route.destination_id];
   var panel = '<div class="route-panel" id="routePanel">';
   panel += '<i class="icon remove"></i>'
-  panel += '<div class="route-info" data-routeid="' + id + '">';
+  panel += '<div class="route-info" data-routeid="' + data.id + '">';
   panel += '<div class="info">';
   panel += '<div class="ui statistic">';
-  panel += '<div class="value">' + route.origin.iata + '</div>';
-  panel += '<div class="label">' + route.origin.name + '</div>';
+  panel += '<div class="value">' + origin.iata + '</div>';
+  panel += '<div class="label">' + origin.name + '</div>';
   panel += '</div>';
   panel += '<i class="resize horizontal icon"></i>';
   panel += '<div class="ui statistic">';
-  panel += '<div class="value">' + route.dest.iata + '</div>';
-  panel += '<div class="label">' + route.dest.name + '</div>';
+  panel += '<div class="value">' + dest.iata + '</div>';
+  panel += '<div class="label">' + dest.name + '</div>';
   panel += '</div>';
   panel += '</div>';
   panel += '<div class="ui unordered steps flight-list vertical" id="route' + route.id + '">';
-  for(i=0;i<flights.length;i++) {
-    var flight = flights[i];
+  for(i=0;i<data.own.length;i++) {
+    var flight = route.own[i];
     var profit = (flight.revenue - flight.cost);
-    flight.loadFactor = 80; ///// Needs to be added to table
     if(profit >= 0) {
       var profitString = '(<span class="greenColor">$' + comma(profit) + ' profit</span>)';
     } else {
       var profitString = '(<span class="redColor">$' + comma(Math.abs(profit)) + ' loss</span>)';
     }
-    panel += '<a class="step" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + aircrafts[flight.aircraft_id].fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.loadFactor + '% Load Factor ' + profitString + '</div></div></a>';
+    panel += '<a class="step own" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.load_factor.factor + '% Load Factor ' + profitString + '</div></div></a>';
+  }
+  if(route.competitors.length > 0) {
+    panel += '<a class="step active title">Competitor Flights</a>';
+  }
+  for(i=0;i<route.competitors.length;i++) {
+    var flight = route.competitors[i];
+    var profit = (flight.revenue - flight.cost);
+    panel += '<a class="step" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.airline.name + ' (' + flight.airline.iata + ') // ' + flight.load_factor.factor + '% load factor</div></div></a>';
   }
   panel += '</div>';
   panel += '</div>';
@@ -136,7 +156,7 @@ function loadExistingRoute(id) {
   $('.route-panel .remove').on('click',function(){
     closeRoutePanel();
   });
-  $('.flight-list').on('click','.step',function(){
+  $('.flight-list').on('click','.step.own',function(){
     loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
   });
 }
@@ -150,7 +170,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
     var flight = data;
     var aircraft = flight.aircraft;
     var config = aircraft.config.aircraft_config;
-    $('.flight-list > .step.active').removeClass('active');
+    $('.flight-list > .step.active').not('.title').removeClass('active');
     $('.step#flight' + flight.id).addClass('active');
     var profit = (flight.revenue - flight.cost);
     if(profit >= 0) {
@@ -247,4 +267,9 @@ function flightCabinInfo(flight, service_class) {
   panel += '<div class="row noclass"' + hideClass + ' data-rowtype="noclass">This aircraft has no ' + className[service_class] + ' class</div>';
   panel += '</div>';
   return panel;
+}
+function competitor(id) {
+  $.getJSON('/route/competitors',{id:id}).done(function(data){
+
+  });
 }

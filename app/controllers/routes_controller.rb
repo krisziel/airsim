@@ -1,24 +1,25 @@
 class RoutesController < ApplicationController
 
+
   def all
     flights = Flight.all
     # flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
-      flightJSON = {
-        :aircraft_id => flight.user_aircraft.aircraft_id,
-        :cost => flight.cost,
-        :distance => flight.distance,
-        :duration => flight.duration,
-        :fare => JSON.parse(flight.fare),
-        :frequencies => flight.frequencies,
-        :id => flight.id,
-        :loads => JSON.parse(flight.loads),
-        :profit => JSON.parse(flight.profit),
-        :revenue => flight.revenue,
-        :route_id => flight.route_id,
-        :user_aircraft => flight.user_aircraft_id
-      }
+      # flightJSON = {
+      #   :aircraft_id => flight.user_aircraft.aircraft_id,
+      #   :cost => flight.cost,
+      #   :distance => flight.distance,
+      #   :duration => flight.duration,
+      #   :fare => JSON.parse(flight.fare),
+      #   :frequencies => flight.frequencies,
+      #   :id => flight.id,
+      #   :loads => JSON.parse(flight.loads),
+      #   :profit => JSON.parse(flight.profit),
+      #   :revenue => flight.revenue,
+      #   :route_id => flight.route_id,
+      #   :user_aircraft => flight.user_aircraft_id
+      # }
       route = Route.find(flight.route_id)
       routeJSON = {
         :id => route.id,
@@ -32,21 +33,78 @@ class RoutesController < ApplicationController
         :maxfare => JSON.parse(route.maxfare),
         :distance => route.distance
       }
-      if @routes[flight.route_id]
-        @routes[flight.route_id][:flights].push(flightJSON)
-      else
-        @routes[flight.route_id] = {
-          :route => routeJSON,
-          :flights => [flightJSON]
-        }
-      end
+      @routes[flight.route_id] = routeJSON
+      # if @routes[flight.route_id]
+      #   @routes[flight.route_id][:flights].push(flightJSON)
+      # else
+      #   @routes[flight.route_id] = {
+      #     :route => routeJSON,
+      #     :flights => [flightJSON]
+      #   }
+      # end
     end
     render json: @routes
   end
 
-  def info
-    @routes = Route.where("(origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",params[:origin],params[:destination],params[:destination],params[:origin])
-    render json: @routes
+  def info *id
+    id = params[:id] || id
+    route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
+    route = {
+      :id => route.id,
+      :demand => {
+        :total => route.demand,
+        :f => route.demand_f,
+        :j => route.demand_j,
+        :p => route.demand_p,
+        :y => route.demand_y
+      },
+      :origin_id => route.origin_id,
+      :destination_id => route.destination_id,
+      :distance => route.distance,
+      :maxfare => JSON.parse(route.maxfare),
+      :minfare => JSON.parse(route.minfare),
+      :competitors => competitors(route.id),
+      :own => own_flights(route.id)
+    }
+    render json: route
+  end
+
+  def competitors *id
+    id = params[:id] || id
+    airline_id = 1
+    flights = []
+    competitors = Flight.where("route_id = ? AND airline_id != ?", id, airline_id)
+    competitors.each do |flight|
+      flight = {
+        :aircraft => flight.basic_aircraft_data,
+        :fare => JSON.parse(flight.fare),
+        :frequencies => flight.frequencies,
+        :id => flight.id,
+        :load_factor => flight.load_factor,
+        :airline => flight.airline.basic_data
+      }
+      flights.push(flight)
+    end
+    flights
+  end
+
+  def own_flights *id
+    id = params[:id] || id
+    airline_id = 1
+    flights = []
+    competitors = Flight.where("route_id = ? AND airline_id == ?", id, airline_id)
+    competitors.each do |flight|
+      flight = {
+        :aircraft => flight.aircraft_data,
+        :cost => flight.cost,
+        :frequencies => flight.frequencies,
+        :id => flight.id,
+        :load_factor => flight.load_factor,
+        :revenue => flight.revenue
+      }
+      flights.push(flight)
+    end
+    flights
   end
 
   def distance

@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   ## ROUTES ##
   get 'routes/' => 'routes#all'
   get 'routes/distance' => 'routes#distance'
+  get 'routes/:id' => 'routes#info'
   get 'routes/:origin/:destination' => 'routes#info'
+  get 'route/competitors' => 'routes#competitors'
 
   ## FLIGHTS ##
   get 'flights/' => 'flights#all'
