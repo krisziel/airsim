@@ -166,10 +166,10 @@ function showRoutePanel(data) {
     loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
   });
   $('#addFlight').on('click',function(){
-    newFlight();
+    displayNewFlight();
   });
 }
-function newFlight() {
+function displayNewFlight() {
   var route = selectedRoute;
   var panel = '<div class="row-container">';
   panel += '<div class="row" data-rowtype="aircraft"><div class="ui selection dropdown"><div class="default text">Aircraft</div><i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="" type="hidden"><div class="menu" style="max-height:260px;">' + loadUnusedAircraft(route.distance, 'dropdown') + '</div></div></div>';
@@ -242,7 +242,7 @@ function updateNewCabinView(aircraftid) {
   });
 }
 function loadFlightInfo(flightid, routeid, flighti) {
-  if(($('.flight-info').data('flightid') === flightid)&&($('.flight-info').css('display') === 'block')) {
+  if(($('.flight-info').data('flightid') === flightid)&&($('.flight-info').html().length > 100)) {
     return false;
   }
   $.getJSON('flights/' + flightid).done(function(data){
@@ -357,12 +357,60 @@ function flightCabinInfo(flight, service_class) {
   panel += '</div>';
   return panel;
 }
+function createFlight() {
+  var route_id = selectedRoute.id;
+  var user_aircraft_id = $('#aircraftInput').val();
+  var frequencies = $('#weeklyFrequencies').html();
+  var fare = getFlightFares();
+  var flightData = {
+    route_id:route_id,
+    user_aircraft_id:user_aircraft_id,
+    frequencies:frequencies,
+    fare:JSON.stringify(fare)
+  }
+  $.post('flights/new',{
+    flight:flightData
+  }).done(function(){
+
+  });
+}
+function updateFlight() {
+  var route_id = selectedRoute.id;
+  var flight_id = selectedFlight.id;
+  var user_aircraft_id = $('#aircraftInput').val();
+  var frequencies = $('#weeklyFrequencies').html();
+  var fare = getFlightFares();
+  var flightData = {
+    route_id:route_id,
+    user_aircraft_id:user_aircraft_id,
+    frequencies:frequencies,
+    fare:JSON.stringify(fare),
+    id:flight_id
+  }
+  $.post('flights/update',{
+    flight:flightData
+  }).done(function(){
+
+  });
+}
+function getFlightFares() {
+  var f = $('.ui.segment[data-tab="f"] input').val();
+  var j = $('.ui.segment[data-tab="j"] input').val();
+  var p = $('.ui.segment[data-tab="p"] input').val();
+  var y = $('.ui.segment[data-tab="y"] input').val();
+  var fares = {
+    f:f,
+    j:j,
+    p:p,
+    y:y
+  }
+  return fares;
+}
 function closeRoutePanel() {
   $('.route-panel').addClass('fadeOut');
   setTimeout(function(){ $('.route-panel').remove(); },500);
 }
 function closeFlightInfoPanel() {
-  $('.flight-info').html('<div class="empty">select a flight to view details</div>');
-  // $('.flight-info').addClass('fadeOut');
-  // setTimeout(function(){ $('.route-panel').removeClass('open'); $('.flight-info').css({display:'none'}).removeAttr('data-flightid','').empty(); },501);
+  $('#flight' + selectedFlight.id).removeClass('active');
+  $('.flight-info').html('<div class="empty">select a flight to view details</div>').removeAttr('data-flightid');
 }

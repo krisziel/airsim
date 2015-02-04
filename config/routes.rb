@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   ## FLIGHTS ##
   get 'flights/' => 'flights#all'
+  post 'flights/new' => 'flights#create'
+  post 'flights/update' => 'flights#update'
   get 'flights/:id' => 'flights#info'
   get 'flights/:origin/:destination' => 'flights#info'
 

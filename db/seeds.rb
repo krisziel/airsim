@@ -68,7 +68,6 @@ Flight.create(route_id:18,user_aircraft_id:21,duration:570,loads:'{"y":96,"p":86
 Flight.create(route_id:19,user_aircraft_id:22,duration:550,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":5300}',frequencies:2,fare:'{"y":560,"p":1700,"j":3360,"f":4670}',revenue:96000,cost:75600,airline_id:1)
 Flight.create(route_id:7,user_aircraft_id:23,duration:560,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":5400}',frequencies:12,fare:'{"y":570,"p":1800,"j":3370,"f":4680}',revenue:97000,cost:97000,airline_id:1)
 Flight.create(route_id:9,user_aircraft_id:24,duration:570,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":7300}',frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:1)
-##
 Flight.create(route_id:17,user_aircraft_id:30,duration:560,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":5400}',frequencies:12,fare:'{"y":570,"p":1800,"j":3370,"f":4680}',revenue:97000,cost:97000,airline_id:2)
 Flight.create(route_id:18,user_aircraft_id:31,duration:570,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":7300}',frequencies:20,fare:'{"y":580,"p":1900,"j":3380,"f":4690}',revenue:98000,cost:120000,airline_id:2)
 Flight.create(route_id:19,user_aircraft_id:32,duration:550,loads:'{"y":96,"p":86,"j":88,"f":65}',profit:'{"y":20000,"p":8600,"j":8800,"f":5300}',frequencies:2,fare:'{"y":560,"p":1700,"j":3360,"f":4670}',revenue:96000,cost:75600,airline_id:2)
@@ -122,7 +121,6 @@ UserAircraft.create(airline_id:1,aircraft_id:1,age:1,aircraft_config:'{"y":{"sea
 UserAircraft.create(airline_id:1,aircraft_id:1,age:1,aircraft_config:'{"y":{"seats":300,"seat_id":1},"p":{"seats":90,"seat_id":2},"j":{"seats":110,"seat_id":6},"f":{"seats":0,"seat_id":9}}',inuse:0)
 UserAircraft.create(airline_id:1,aircraft_id:2,age:1,aircraft_config:'{"y":{"seats":220,"seat_id":1},"p":{"seats":50,"seat_id":2},"j":{"seats":60,"seat_id":6},"f":{"seats":8,"seat_id":9}}',inuse:0)
 UserAircraft.create(airline_id:1,aircraft_id:1,age:1,aircraft_config:'{"y":{"seats":300,"seat_id":1},"p":{"seats":70,"seat_id":2},"j":{"seats":80,"seat_id":6},"f":{"seats":10,"seat_id":9}}',inuse:0)
-##
 UserAircraft.create(airline_id:1,aircraft_id:2,age:1,aircraft_config:'{"y":{"seats":300,"seat_id":1},"p":{"seats":90,"seat_id":2},"j":{"seats":110,"seat_id":6},"f":{"seats":0,"seat_id":9}}',inuse:0)
 UserAircraft.create(airline_id:2,aircraft_id:2,age:1,aircraft_config:'{"y":{"seats":220,"seat_id":1},"p":{"seats":50,"seat_id":2},"j":{"seats":60,"seat_id":6},"f":{"seats":8,"seat_id":9}}',inuse:0)
 UserAircraft.create(airline_id:2,aircraft_id:3,age:1,aircraft_config:'{"y":{"seats":120,"seat_id":1},"p":{"seats":60,"seat_id":3},"j":{"seats":30,"seat_id":5},"f":{"seats":10,"seat_id":7}}',inuse:1)

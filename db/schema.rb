@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203080835) do
+ActiveRecord::Schema.define(version: 20150204163205) do
 
   create_table "aircraft_capacities", force: true do |t|
     t.integer  "aircraft_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150203080835) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "money"
   end
 
   create_table "airports", force: true do |t|

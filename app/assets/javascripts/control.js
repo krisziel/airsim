@@ -5,9 +5,6 @@ function createAirportList() {
     var airportRow = '<div class="content">';
     airportRow += '<div>' + airport.name + ' (' + airport.iata + ')</div>';
     airportRow += '<div>' + airport.city + ', ' + airport.country + '</div>';
-    airportRow += '<div>Population: ' + comma(airport.population) + '</div>';
-    airportRow += '<div>Slots: '+ comma(airport.slots_total) + ' (' + comma(airport.slots_available) + ' available)</div>';
-    // airportRow += '<i class="info circle icon"></i>';
     var thisAirport = $('<a/>',{
       class:'step',
       id:'airportlist' + airport.id,
@@ -36,7 +33,7 @@ function searchAirports() {
   var value = $("#airportSearch").val().toLowerCase();
   var results = 0;
   $('#airportList .step:not(#airportNotFound)').each(function(i,el){
-    if($(el).data("iata").match(value)||$(el).data("city").toLowerCase().match(value)) {
+    if($(el).data("iata").toLowerCase().match(value)||$(el).data("city").toLowerCase().match(value)) {
       $(el).css({display:'block'});
       results++;
     } else {
