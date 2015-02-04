@@ -20,9 +20,9 @@
 .route-panel {
   z-index: 10009;
   position: absolute;
-  -webkit-transition: all 1s;
+  -webkit-transition: all .7s;
   overflow: hidden;
-  width: 300px;
+  width: 301px;
   margin: 0 0 0 -150px;
   top: 150px;
   left: 50%;
@@ -33,13 +33,19 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
+  .line {
+    width: 1px;
+    height: 100%;
+    float: left;
+    background: rgba(0,0,0,.3);
+  }
   .remove {
     position: absolute;
     left: 3px;
     top: 3px;
   }
   &.open {
-    width: 600px;
+    width: 601px;
     margin-left: -300px;
     .step {
       -webkit-border-top-right-radius: 0 !important;
@@ -57,6 +63,7 @@
   .route-info {
     width: 298px;
     float: left;
+    overflow-x: hidden;
   }
   .info {
     margin-top: 5px;
@@ -113,10 +120,15 @@
     height: 100%;
     width: 300px;
     float: left;
-    border-left: 1px solid rgba(0,0,0,.3);
     z-index: 8;
     position: relative;
     background: #ffffff;
+    .empty {
+      min-height: 112px;
+      line-height: 112px;
+      text-align: center;
+      font-weight: bold;
+    }
     .tab > .menu {
       margin: 4px 0 4px 2px;
     }

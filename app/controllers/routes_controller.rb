@@ -6,20 +6,6 @@ class RoutesController < ApplicationController
     # flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
-      # flightJSON = {
-      #   :aircraft_id => flight.user_aircraft.aircraft_id,
-      #   :cost => flight.cost,
-      #   :distance => flight.distance,
-      #   :duration => flight.duration,
-      #   :fare => JSON.parse(flight.fare),
-      #   :frequencies => flight.frequencies,
-      #   :id => flight.id,
-      #   :loads => JSON.parse(flight.loads),
-      #   :profit => JSON.parse(flight.profit),
-      #   :revenue => flight.revenue,
-      #   :route_id => flight.route_id,
-      #   :user_aircraft => flight.user_aircraft_id
-      # }
       route = Route.find(flight.route_id)
       routeJSON = {
         :id => route.id,
@@ -34,14 +20,6 @@ class RoutesController < ApplicationController
         :distance => route.distance
       }
       @routes[flight.route_id] = routeJSON
-      # if @routes[flight.route_id]
-      #   @routes[flight.route_id][:flights].push(flightJSON)
-      # else
-      #   @routes[flight.route_id] = {
-      #     :route => routeJSON,
-      #     :flights => [flightJSON]
-      #   }
-      # end
     end
     render json: @routes
   end
@@ -51,13 +29,6 @@ class RoutesController < ApplicationController
     route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
     route = {
       :id => route.id,
-      :demand => {
-        :total => route.demand,
-        :f => route.demand_f,
-        :j => route.demand_j,
-        :p => route.demand_p,
-        :y => route.demand_y
-      },
       :origin_id => route.origin_id,
       :destination_id => route.destination_id,
       :distance => route.distance,
