@@ -93,6 +93,50 @@ function createRouteList() {
       loadFlightInfo(selectedFlight, selectedRoute);
     });
   });
+  $('#routeSearch').on('keyup',function(){
+    searchRoutes();
+  });
+  $('#routeSearchButton').on('click',function(){
+    searchRoutes();
+  });
+}
+function searchRoutes() {
+  var route = $('#routeSearch').val().toUpperCase();
+  console.log(route);
+  if(route.length < 3) {
+    $('#flightList .step').css({display:'block'});
+    return false;
+  } else if((route.length !== 3)&&(route.length !== 7)) {
+    return false;
+  }
+  var airports = route.split("-");
+  if(airports.length == 2) {
+    var searchOrigin = airports[0];
+    var searchDestination = airports[1];
+  } else {
+    var searchOrigin = airports[0];
+    var searchDestination = false;
+  }
+  $('#flightList .step').each(function(index){
+    var route = $(this).find('.title').html().split(" ")[0].split("-");
+    var flightOrigin = route[0];
+    var flightDestination = route[1];
+    var display = 'block';
+    if(searchDestination) {
+      if(((flightOrigin === searchOrigin)&&(flightDestination === searchDestination))||((flightOrigin === searchDestination)&&(flightDestination === searchOrigin))) {
+        display = 'block';
+      } else {
+        display = 'none';
+      }
+    } else {
+      if((flightOrigin === searchOrigin)||(flightDestination === searchOrigin)) {
+        display = 'block';
+      } else {
+        display = 'none';
+      }
+    }
+    $(this).css({display:display});
+  });
 }
 function createAircraftList() {
   $.getJSON('/aircrafts/airline').done(function(data){
@@ -114,7 +158,7 @@ function createAircraftList() {
       var row = '<a class="step own" id="menuAircraft' + aircraft.id + '" data-inuse="' + aircraft.inuse + '" data-aircraftid="' + aircraft.id + '"><div class="content"><div class="title">' + aircraft.type.fullName + route + '</div>'+'<div class="description">F: ' + config.f.seats + ' // J: ' + config.j.seats + ' // PY: ' + config.p.seats + ' // Y: ' + config.y.seats + '</div></div></a>';
       aircraftOrder[aircraft.type.manufacturer][aircraft.type.manufacturer.toUpperCase().substr(0,1)+aircraft.type.iata].push(row);
     });
-    var aircraftList = '<a class="step title" id="purchaseAircraftButton"><div class="content"><div class="title" style="font-size: 22px;"><i class="icon plus"></i>Purchase Aircraft</div></div></a>';
+    var aircraftList = '<a class="step title" id="purchaseAircraftButton"><div class="content"><div class="title" style="font-size: 22px;">Purchase Aircraft</div></div></a>';
     $.each(aircraftOrder,function(key,value){
       var title = '<a class="step own header"><div class="content"><div>' + key + '</div></div></a>';
       var type = '';
