@@ -123,11 +123,21 @@ class RoutesController < ApplicationController
   def parse_demand
     json = []
     CSV.foreach("public/us.csv") do |row|
+      if row[6].class == String
+        pax = row[6].gsub(/\,/,'')
+      else
+        pax = row[6]
+      end
+      if row[5].class == String
+        fare = row[6].gsub(/\,/,'')
+      else
+        fare = row[6]
+      end
       json.push({
         :origin => row[3],
         :destination => row[4],
-        :pax => row[6].to_f.ceil,
-        :fare => row[5].to_f.ceil
+        :pax => pax.to_f.ceil,
+        :fare => fare.to_f.ceil
       })
     end
     routes = json
