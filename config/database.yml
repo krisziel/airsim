@@ -12,10 +12,11 @@
 #       Install PostgreSQL and put its /bin directory on your path.
 #
 # Configure Using Gemfile
-gem 'pg'
+# gem 'pg'
 
 default: &default
-  adapter: sqlite3
+  # adapter: sqlite3
+  adapter: postgresql
   encoding: unicode
   pool: 5
 
@@ -32,6 +33,7 @@ production:
   database: airsim_production
   username: airsim
   password: <%= ENV['AIRSIM_DATABASE_PASSWORD'] %>
+
 
 # development:
 #   adapter: sqlite3
