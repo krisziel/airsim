@@ -1,4 +1,5 @@
 class Airport < ActiveRecord::Base
+  validates_uniqueness_of :iata
   attr_accessor :routes, :flights, :fares
 
   def basic_data
@@ -9,7 +10,7 @@ class Airport < ActiveRecord::Base
     }
     airport
   end
-  
+
   # def count airport
   #   routes = Route.where("origin=? OR destination=?", airport.id, airport.id)
   #   count = 0

@@ -182,3 +182,4 @@ Airline.create(name:"Velocity Air Georgia",iata:"VLX",hub:"CDG",game_id:1,user_i
 Airline.create(name:"Velocity Air Austria",iata:"VLA",hub:"VIE",game_id:1,user_id:5)
 
 # ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = '<table_name>'")
+['DXB','AUH','SIN','KWI','BAH','DOH','KUL','SYD','GLA','MEL','PER','HKG','MFM','ICN','NRT','ROR','YCG','RAN','TIS','STU','NNI','NGO','PEK','PVG','HNL','KOA','OGG','LIH','AKL','GUM','ANC','SEA','PDX','SMF','SFO','SJC','LAX','SAN','PHX','LAS','MEX','GRU','GIG','SCL','EZE','PTY','IAH','DFW','ABQ','RNO','DEN','ORD','YVR','YYC','ZRH','YOW','YYT','BOS','JFK','EWR','IAD','RDU','CLT','MIA','MCO','FLL','MSY','OMA','DTW','MSP','CLE','MEM','BOI','OKC','BZN','FAR','TIJ','PVR','CUN','EDI','SNN','LHR','MAN','CDG','FRA','MUC','TXL','VIE','IST','CAI','TLV','DME','COS','CGK','MLE','DOM','DEL','BKK','FUK','KIX','GUM','FCO','BCN','MXP','TPE','TBS','AMS','BRU','GVA']
