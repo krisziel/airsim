@@ -20,6 +20,7 @@ $(document).ready(function(){
   loadMap();
   loadAircraft();
   createRouteList();
+  createAircraftList();
   activateNav();
 });
 $(window).resize(function(){

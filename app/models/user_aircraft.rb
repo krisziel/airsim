@@ -1,7 +1,7 @@
 class UserAircraft < ActiveRecord::Base
   belongs_to :aircraft
   belongs_to :airline
-
+  
   def config
     config = JSON.parse(aircraft_config)
     full_config = {

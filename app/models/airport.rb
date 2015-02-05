@@ -1,7 +1,6 @@
 class Airport < ActiveRecord::Base
   validates_uniqueness_of :iata
-  attr_accessor :routes, :flights, :fares
-
+  
   def basic_data
     airport = {
       :iata => iata,

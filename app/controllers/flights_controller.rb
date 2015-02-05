@@ -107,6 +107,7 @@ class FlightsController < ApplicationController
 
   def delete
     flight = Flight.find(params[:id])
+    UserAircraft.find(flight.user_aircraft_id).update(:inuse => false)
     flight.user_aircraft.inuse = false
     flight.delete
     render json: flight

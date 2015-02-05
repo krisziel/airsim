@@ -1,15 +1,25 @@
 <div id="control">
-  <div class="ui four item teal menu">
+  <div class="ui four item teal menu" id="controlTabs">
     <a class="active item" data-tabid="airport">A</a>
     <a class="item" data-tabid="flight">F</a>
     <a class="item" data-tabid="aircraft">P</a>
     <a class="item">D</a>
   </div>
-  <div class="ui category search">
+  <div class="ui category search list-header airportList">
     <div class="ui left icon input">
       <i class="search icon" id="airportSearchButton"></i>
       <input class="prompt" type="text" placeholder="Airport Code Or City" id="airportSearch" maxlength="20">
     </div>
+  </div>
+  <div class="ui category search list-header flightList" style="display: none;">
+    <div class="ui left icon input">
+      <i class="search icon" id="flightSearchButton"></i>
+      <input class="prompt" type="text" placeholder="Airport Code Or City" id="flightSearch" maxlength="20">
+    </div>
+  </div>
+  <div class="ui secondary menu aircraftList list-header" style="display: none;">
+    <a class="item active" data-type="all">All Aircraft</a>
+    <a class="item" data-type="unused">Unused Aircraft</a>
   </div>
   <div class="ui unordered steps vertical" id="airportList">
   </div>
@@ -20,22 +30,3 @@
 </div>
 <div id="map">
 </div>
-<!-- <div class="ui small test modal transition" style="margin-top: -98.5px;">
-  <i class="close icon"></i>
-  <div class="header">
-    Cancel this Flight
-  </div>
-  <div class="content">
-    <p>Are you sure you want to cancel this flight?</p>
-  </div>
-  <div class="actions">
-    <div class="ui negative button">
-      No
-    </div>
-    <div class="ui positive right labeled icon button">
-      Yes
-      <i class="checkmark icon"></i>
-    </div>
-  </div>
-</div>
- -->

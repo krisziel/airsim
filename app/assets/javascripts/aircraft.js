@@ -8,17 +8,7 @@ function loadAircraft() {
       value.fullName = value.manufacturer + ' ' + value.name;
       aircrafts[value.id] = value;
     });
-    loadUserAircraft();
     loadSeats();
-  });
-}
-function loadUserAircraft() {
-  $.getJSON('aircrafts/airline').done(function(data){
-    $.each(data,function(i,value){
-      value.aircraft = aircrafts[value.aircraft_id];
-      value.fullName = value.aircraft.manufacturer + ' ' + value.aircraft.name;
-      userAircrafts[value.id] = value;
-    });
   });
 }
 function loadUnusedAircraft(range, type, defaultAircraft) {
