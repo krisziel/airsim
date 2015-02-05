@@ -2,8 +2,9 @@ class RoutesController < ApplicationController
   require 'csv'
 
   def all
-    flights = Flight.all
-    # flights = Flight.where(:airline_id => airline_id)
+    # flights = Flight.all
+    airline_id = 1
+    flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
       route = Route.find(flight.route_id)
@@ -26,6 +27,7 @@ class RoutesController < ApplicationController
 
   def info *id
     id = params[:id] || id
+    id = id || 0
     route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
     route = {
       :id => route.id,
