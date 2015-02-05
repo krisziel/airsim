@@ -25,9 +25,8 @@ class RoutesController < ApplicationController
     render json: @routes
   end
 
-  def info *id
-    id = params[:id] || id
-    id = 0 if id == nil
+  def info
+    id = params[:id].to_i || 0
     route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
     route = {
       :id => route.id,
