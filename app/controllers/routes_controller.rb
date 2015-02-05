@@ -27,7 +27,7 @@ class RoutesController < ApplicationController
 
   def info
     id = params[:id].to_i || 0
-    route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
+    route = Route.where("(id = CAST(? AS integer)) OR (origin_id = ? AND destination_id = ?) OR (origin_id = ? AND destination_id = ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
     route = {
       :id => route.id,
       :origin_id => route.origin_id,
@@ -64,7 +64,7 @@ class RoutesController < ApplicationController
     id = params[:id] || id
     airline_id = 1
     flights = []
-    competitors = Flight.where("route_id = ? AND airline_id == ?", id, airline_id)
+    competitors = Flight.where("route_id = ? AND airline_id = ?", id, airline_id)
     competitors.each do |flight|
       flight = {
         :aircraft => flight.aircraft_data,
