@@ -103,7 +103,6 @@ function loadNewRoute(args) {
   });
 }
 function loadExistingRoute(id) {
-  var route = activeRoutes[id];
   $.getJSON('/routes/' + id).done(function(data){
     showRoutePanel(data);
   });
@@ -113,7 +112,7 @@ function showRoutePanel(data) {
   var route = data;
   var origin = airports[route.origin_id];
   var dest = airports[route.destination_id];
-  var panel = '<div class="route-panel open" id="routePanel">';
+  var panel = '<div class="route-panel open transition ui modal" id="routePanel">';
   panel += '<i class="icon remove"></i>'
   panel += '<div class="route-info" data-routeid="' + data.id + '">';
   panel += '<div class="info">';
@@ -128,9 +127,7 @@ function showRoutePanel(data) {
   panel += '</div>';
   panel += '</div>';
   panel += '<div class="ui unordered steps flight-list vertical" id="route' + route.id + '">';
-  if(route.own.length === 0) {
-    panel += '<a class="step active title" id="addFlight"><div class="content"><div class="title" style="font-size: 22px;"><i class="icon plus"></i>Create Flight</div></div></a>';
-  }
+  panel += '<a class="step active title" id="addFlight"><div class="content"><div class="title" style="font-size: 22px;"><i class="icon plus"></i>Create Flight</div></div></a>';
   for(i=0;i<data.own.length;i++) {
     var flight = route.own[i];
     var profit = (flight.revenue - flight.cost);
@@ -142,12 +139,12 @@ function showRoutePanel(data) {
     panel += '<a class="step own" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.load_factor.factor + '% Load Factor ' + profitString + '</div></div></a>';
   }
   if(route.competitors.length > 0) {
-    panel += '<a class="step active title">Competitor Flights</a>';
+    panel += '<a class="step active title competitor-flight">Competitor Flights</a>';
   }
   for(i=0;i<route.competitors.length;i++) {
     var flight = route.competitors[i];
     var profit = (flight.revenue - flight.cost);
-    panel += '<a class="step" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.airline.name + ' (' + flight.airline.iata + ') // ' + flight.load_factor.factor + '% load factor</div></div></a>';
+    panel += '<a class="step competitor-flight" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + route.id + '" data-flighti="' + i + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">' + flight.airline.name + ' (' + flight.airline.iata + ') // ' + flight.load_factor.factor + '% load factor</div></div></a>';
   }
   panel += '</div>';
   panel += '</div>';
@@ -156,8 +153,9 @@ function showRoutePanel(data) {
   panel += '<div class="empty">select a flight to view details</div>';
   panel += '</div>';
   panel += '</div>';
-  $('#routePanel').remove();
+  $('.route-panel').remove();
   $('body').append(panel);
+  $('.route-panel').modal('show');
   $('.line').css({height:$('.route-panel').height()});
   $('.route-panel .remove').on('click',function(){
     closeRoutePanel();
@@ -212,7 +210,7 @@ function displayNewFlight() {
     closeFlightInfoPanel();
   });
   $('#launchFlightButton').on('click',function(){
-    newFlight();
+    createFlight();
   });
   $('.frequencies').on('mousemove',function(){
     $('#weeklyFrequencies').html($(this).val());
@@ -228,6 +226,7 @@ function displayNewFlight() {
 function updateNewCabinView(aircraftid) {
   var newAircraft = userAircrafts[aircraftid];
   var newDuration = calculateDuration(selectedRoute.distance,newAircraft.aircraft.speed);
+  $('#launchFlightButton').addClass('positive');
   $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.aircraft.turn_time));
   $('.row[data-rowtype="flight-duration"] span:not(.label)').html(minutesToHours(newDuration));
   $.each(newAircraft.config,function(key,value){
@@ -242,14 +241,14 @@ function updateNewCabinView(aircraftid) {
   });
 }
 function loadFlightInfo(flightid, routeid, flighti) {
-  if(($('.flight-info').data('flightid') === flightid)&&($('.flight-info').html().length > 100)) {
+  if($('.flight-info').attr('data-flightid') === flightid) {
     return false;
   }
   $.getJSON('flights/' + flightid).done(function(data){
     selectedFlight = data;
     var flight = data;
     var aircraft = flight.aircraft;
-    var config = aircraft.config.aircraft_config;
+    var config = aircraft.config;
     $('.flight-list > .step.active').not('.title').removeClass('active');
     $('.step#flight' + flight.id).addClass('active');
     var profit = (flight.revenue - flight.cost);
@@ -259,7 +258,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
       var profitString = '<div class="row"><span class="label">Weekly Loss:</span> $' + comma(Math.abs(profit)) + '</div>';
     }
     var panel = '<div class="row-container">';
-    panel += '<div class="row" data-rowtype="aircraft"><div class="ui selection dropdown"><div class="default text">' + aircraft.manufacturer + ' ' + aircraft.name + ' (' + config.f.seats + '/' + config.j.seats + '/' + config.p.seats + '/' + config.y.seats + ')</div><i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="' + aircraft.id + ''+'" type="hidden"><div class="menu" style="max-height: 300px;">' + loadUnusedAircraft(flight.route.distance, 'dropdown', aircraft.config.id) + '</div></div></div>'; // For some reason, without the string break syntax highlighting for the rest of the document doesn't work
+    panel += '<div class="row" data-rowtype="aircraft"><div class="ui selection dropdown"><div class="default text">' + aircraft.type.fullName + ' (' + config.f.seats + '/' + config.j.seats + '/' + config.p.seats + '/' + config.y.seats + ')</div><i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="' + aircraft.id + ''+'" type="hidden"><div class="menu" style="max-height: 300px;">' + loadUnusedAircraft(flight.route.distance, 'dropdown', aircraft.id) + '</div></div></div>'; // For some reason, without the string break syntax highlighting for the rest of the document doesn't work
     panel += '<div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span>' + comma(flight.route.distance) + '</span> Miles</div>';
     panel += '<div class="row" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span>' + minutesToHours(flight.duration) + '</span></div>';
     panel += profitString;
@@ -301,8 +300,8 @@ function loadFlightInfo(flightid, routeid, flighti) {
     $('#cancelButton').on('click',function(){
       closeFlightInfoPanel();
     });
-    $('#saveButton').on('click',function(){
-      saveFlightInfo();
+    $('#saveFlightButton').on('click',function(){
+      updateFlight();
     });
     $('#cancelFlightButton').on('click',function(){
       cancelFlight();
@@ -315,7 +314,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
 }
 function updateCabinView(aircraftid) {
   var newAircraft = userAircrafts[aircraftid];
-  var oldAircraft = selectedFlight.aircraft.config.aircraft_config;
+  var oldAircraft = selectedFlight.aircraft.config;
   var flight = selectedFlight;
   var newDuration = calculateDuration(flight.route.distance,newAircraft.aircraft.speed);
   $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.aircraft.turn_time));
@@ -336,7 +335,7 @@ function updateCabinView(aircraftid) {
   });
 }
 function flightCabinInfo(flight, service_class) {
-  var cabin = flight.aircraft.config.aircraft_config[service_class];
+  var cabin = flight.aircraft.config[service_class];
   var performance = flight.performance;
   var minFare = (flight.route.minFare[service_class]);
   var maxFare = (flight.route.maxFare[service_class]);
@@ -348,7 +347,7 @@ function flightCabinInfo(flight, service_class) {
     var hideClass = ' style="display:block;"'
   }
   var panel = '<div class="ui tab segment" data-tab="' + service_class + '">';
-  panel += '<div class="row"' + displayClass + ' data-rowtype="seattype"><span class="label">Seat Type:</span> <span>' + cabin.seat.name + '</span></div>';
+  panel += '<div class="row"' + displayClass + ' data-rowtype="seattype"><span class="label">Seat Type:</span> <span>' + cabin.name + '</span></div>';
   panel += '<div class="row"' + displayClass + ' data-rowtype="capacity"><span class="label">Capacity:</span> <span>' + cabin.seats + '</span></div>';
   panel += '<div class="row"' + displayClass + ' data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>' + performance.load[service_class] + '</span></div>';
   panel += '<div class="row"' + displayClass + ' data-rowtype="weeklyprofit"><span class="label">Weekly Profit:</span> $<span>' + comma(performance.profit[service_class]) + '</span></div>';
@@ -370,8 +369,12 @@ function createFlight() {
   }
   $.post('flights/new',{
     flight:flightData
-  }).done(function(){
-
+  }).done(function(data){
+    flight = data;
+    $('#addFlight').after('<a class="step own" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + flight.route_id + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">Just Launched</div></div></a>');
+    $('#flight' + flight.id).on('click',function(){
+      loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
+    });
   });
 }
 function updateFlight() {
@@ -389,8 +392,20 @@ function updateFlight() {
   }
   $.post('flights/update',{
     flight:flightData
-  }).done(function(){
-
+  }).done(function(flight){
+    $('#flight' + flight.id).find('.title').html(flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)');
+  });
+}
+function cancelFlight() {
+  var route_id = selectedRoute.id;
+  var flightData = {
+    route_id:route_id,
+  }
+  $.post('flights/delete',{
+    flight:flightData
+  }).done(function(data){
+    closeFlightInfoPanel();
+    $('#flight' + flight.id).remove();
   });
 }
 function getFlightFares() {
@@ -407,7 +422,7 @@ function getFlightFares() {
   return fares;
 }
 function closeRoutePanel() {
-  $('.route-panel').addClass('fadeOut');
+  $('.route-panel').modal('hide');
   setTimeout(function(){ $('.route-panel').remove(); },500);
 }
 function closeFlightInfoPanel() {

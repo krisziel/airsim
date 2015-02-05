@@ -18,7 +18,7 @@
   }
 }
 .route-panel {
-  z-index: 10009;
+  z-index: 1009;
   position: absolute;
   -webkit-transition: all .7s;
   overflow: hidden;
@@ -45,8 +45,8 @@
     top: 3px;
   }
   &.open {
-    width: 601px;
-    margin-left: -300px;
+    width: 601px !important;
+    margin-left: -300px !important;
     .step {
       -webkit-border-top-right-radius: 0 !important;
       -moz-border-top-right-radius: 0 !important;

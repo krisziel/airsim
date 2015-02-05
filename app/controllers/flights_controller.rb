@@ -1,7 +1,36 @@
 class FlightsController < ApplicationController
 
-  def info
-    flight = Flight.find(params[:id])
+  def all
+    @airline_id = 1
+    flights = []
+    flightarr = Flight.where(:airline_id => @airline_id)
+    flightarr.each do |flight|
+      flight = {
+        :route_id => flight.route_id,
+        :origin => {
+          :iata => Airport.find(flight.route.origin_id).iata,
+          :id => flight.route.origin_id
+        },
+        :destination => {
+          :iata => Airport.find(flight.route.destination_id).iata,
+          :id => flight.route.destination_id
+        },
+        :frequencies => flight.frequencies,
+        :id => flight.id,
+        :revenue => flight.revenue,
+        :cost => flight.cost,
+        :aircraft => flight.basic_aircraft_data,
+        :load_factor => flight.load_factor
+      }
+      flights.push(flight)
+    end
+    render json: flights
+  end
+
+  def info *id
+    id = params[:id] || id
+    flight = Flight.find(id)
+    flight.class == Array ? flight = flight[0] : flight = flight
     user_ac = UserAircraft.find(flight.user_aircraft_id)
     ac_config = JSON.parse(user_ac.aircraft_config)
     ac_config.each do |key,value|
@@ -25,19 +54,20 @@ class FlightsController < ApplicationController
       :type => flight.user_aircraft.aircraft,
       :config => user_aircraft
     }
+    flight.loads ? loads = JSON.parse(flight.loads) : loads = {}
     full_flight = {
       :id => flight.id,
       :route_id => flight.route_id,
       :duration => flight.duration,
       :frequencies => flight.frequencies,
       :performance => {
-        :load => JSON.parse(flight.loads),
+        :load => loads,
         :profit => JSON.parse(flight.profit),
         :fare => JSON.parse(flight.fare)
       },
       :revenue => flight.revenue,
       :cost => flight.cost,
-      :aircraft => full_aircraft,
+      :aircraft => flight.aircraft_data,
       :route => {
         :minFare => JSON.parse(flight.route.minfare),
         :maxFare => JSON.parse(flight.route.maxfare),
@@ -50,22 +80,36 @@ class FlightsController < ApplicationController
   def create
     flight_data = validate_flight flight_params, "new"
     if flight_data.class == Array
+      render json: flight_data
     else
       flight = Flight.new(flight_data)
-      UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
-      flight_data[:save] = flight.save
+      if flight.save
+        UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
+        info flight.id
+      else
+      end
     end
-    render json: flight_data
   end
 
   def update
     flight_data = validate_flight flight_params, "update"
     if flight_data.class == Array
+      render json: flight_data
     else
-      p flight_data
-      flight_data[:save] = Flight.find(flight_data[:id]).update(flight_data)
+      if Flight.find(flight_data[:id]).update(flight_data)
+        info flight_data[:id]
+      else
+        flight_data = {:error => "error saving route",:routeid => flight_data[:id]}
+        render json: flight_data
+      end
     end
-    render json: flight_data
+  end
+
+  def delete
+    flight = Flight.find(params[:id])
+    flight.user_aircraft.inuse = false
+    flight.delete
+    render json: flight
   end
 
   private
@@ -74,51 +118,16 @@ class FlightsController < ApplicationController
     params.require(:flight).permit(:route_id, :user_aircraft_id, :fare, :frequencies, :id)
   end
 
-  def get_route route_id
-    route_content = Route.find(route_id)
-    route = {}
-    if route
-      route[:valid] = true
-      route[:id] = route_id
-      route[:distance] = route_content.distance
-    else
-      route[:value] = false
-    end
-    route
-  end
-
-  def get_user_aircraft aircraft_id, type, *flight_id
-    aircraft = UserAircraft.find(aircraft_id)
-    user_aircraft = {}
-    if aircraft.inuse
-      if type == "new"
-        error = true
-      else
-        flight = Flight.find(flight_id)
-        if flight.user_aircraft_id == aircraft_id
-          error = false
-        else
-          error = true
-        end
-      end
-    end
-    if error
-      user_aircraft[:valid] = false
-      user_aircraft[:code] = 811
-      user_aircraft[:message] = "aircraft in use"
-    else
-      user_aircraft[:valid] = true
-      user_aircraft[:id] = aircraft_id
-      user_aircraft[:speed] = aircraft.aircraft.speed
-      user_aircraft[:range] = aircraft.aircraft.range
-      user_aircraft[:airline] = aircraft.airline
-    end
-    user_aircraft
-  end
-
   def validate_flight data, type
     flight = {}
     errors = []
+    empty_class = {
+      :f => 0,
+      :j => 0,
+      :p => 0,
+      :y => 0
+    }
+    empty_class = empty_class.to_json
     route = get_route data[:route_id]
     if route[:valid]
       flight[:route_id] = route[:id]
@@ -128,12 +137,12 @@ class FlightsController < ApplicationController
         :route_id => route[:id],
         :code => 810,
         :message => "invalid route id"
-        })
+      })
     end
     if type == "new"
       user_aircraft = get_user_aircraft data[:user_aircraft_id], type
     else
-      user_aircraft = get_user_aircraft data[:user_aircraft_id], type, data[:flight_id]
+      user_aircraft = get_user_aircraft data[:user_aircraft_id], type, data[:id]
       flight[:id] = data[:id]
     end
     if user_aircraft[:valid]
@@ -166,11 +175,58 @@ class FlightsController < ApplicationController
     flight[:fare] = data[:fare]
     flight[:airline_id] = user_aircraft[:airline].id
     flight[:game_id] = user_aircraft[:airline].game_id
+    if type == "new"
+      flight[:loads] = empty_class
+      flight[:profit] = empty_class
+    end
     if errors.length > 0
       errors
     else
       flight
     end
+  end
+
+  def get_route route_id
+    route_content = Route.find(route_id)
+    route = {}
+    if route
+      route[:valid] = true
+      route[:id] = route_id
+      route[:distance] = route_content.distance
+    else
+      route[:valid] = false
+    end
+    route
+  end
+
+  def get_user_aircraft aircraft_id, type, *flight_id
+    aircraft = UserAircraft.find(aircraft_id)
+    user_aircraft = {}
+    if aircraft.inuse
+      if type == "new"
+        error = true
+      else
+        flight = Flight.find(flight_id)
+        flight.class == Array ? flight = flight[0] : flight = flight
+        if flight.user_aircraft_id == aircraft_id
+          error = false
+        else
+          error = true
+        end
+      end
+    end
+    if error
+      user_aircraft[:valid] = false
+      user_aircraft[:code] = 811
+      user_aircraft[:message] = "aircraft in use"
+    else
+      user_aircraft[:valid] = true
+      user_aircraft[:id] = aircraft_id
+      user_aircraft[:speed] = aircraft.aircraft.speed
+      user_aircraft[:range] = aircraft.aircraft.range
+      user_aircraft[:airline] = aircraft.airline
+    end
+    user_aircraft
   end
 
 end

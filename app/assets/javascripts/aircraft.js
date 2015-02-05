@@ -33,6 +33,9 @@ function loadUnusedAircraft(range, type, defaultAircraft) {
     if(defaultAircraft) {
       list.unshift(userAircrafts[defaultAircraft]);
     }
+    if(list.length === 0) {
+      dropdown = '<div class="item active selected" data-value="0">No Available Aircraft</div>';
+    }
     $.each(list,function(i,value){
       var selected = '';
       if(i === 0) {

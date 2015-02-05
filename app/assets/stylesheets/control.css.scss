@@ -24,3 +24,7 @@
     width: 100%;
   }
 }
+#control .steps {
+  overflow-y: auto;
+  overflow-x: hidden;
+}

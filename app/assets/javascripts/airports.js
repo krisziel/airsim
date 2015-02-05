@@ -69,23 +69,9 @@ function loadAirport(marker) {
     highlightRoutes(id);
     airportPopup += '<div class="fa-star fa" title="Select Airport"></div>';
   }
-  airportPopup += '';
-  airportPopup += '';
-  airportPopup += '';
-  airportPopup += '';
-  airportPopup += '';
-  airportPopup += '';
-  airportPopup += '';
   airportPopup += '<div class="title">' + airport.name + ' (' + airport.iata + ')</div>';
   airportPopup += '<div>' + airport.city + ', ' + airport.country + '</div>';
-  airportPopup += '<div>Population: ' + airport.population + '</div>';
-  airportPopup += '<div>Slots: '+ comma(airport.slots_total) + ' (' + comma(airport.slots_available) + ' available)</div>';
-  airportPopup += '<div class="info">i</div>';
-  airportPopup += '<div class="operationDetails">';
-  airportPopup += '<div class="title">Your Operation</div>';
-  airportPopup += '<div>Routes: ' + airport.routes + '</div>';
-  airportPopup += '<div>Flights: ' + airport.flights + '</div>';
-  airportPopup += '<div class="button routes-btn">Show Routes</div>';
+  airportPopup += '<div>Population: ' + comma(airport.population) + '</div>';
   airportPopup += '</div>';
   var popup = L.popup({
     offset:L.point(0,-22),

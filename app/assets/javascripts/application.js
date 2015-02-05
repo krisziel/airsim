@@ -19,6 +19,8 @@ $(document).ready(function(){
   sizeMap();
   loadMap();
   loadAircraft();
+  createRouteList();
+  activateNav();
 });
 $(window).resize(function(){
   sizeMap();

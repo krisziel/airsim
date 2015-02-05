@@ -2,6 +2,7 @@ var globalMap;
 
 function sizeMap() {
   $('#map').css({width:$(window).width()-300});
+  $('#control .steps').css({height:$(window).height()-73});
 }
 function loadMap(){
   L.mapbox.accessToken = 'pk.eyJ1Ijoia3ppZWwiLCJhIjoiaVROWDVNcyJ9.hxCBMTpnmZjG8X_03FYMBg';
