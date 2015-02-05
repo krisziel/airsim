@@ -14,7 +14,7 @@ function loadAircraft() {
 function loadUnusedAircraft(range, type, defaultAircraft) {
   var list = [];
   $.each(userAircrafts,function(key,value) {
-    if((value.aircraft.range >= range)&&(value.inuse === false)) {
+    if((value.type.range >= range)&&(value.inuse === false)) {
       list.push(value);
     }
   });

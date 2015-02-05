@@ -52,7 +52,8 @@ class AircraftsController < ApplicationController
           :manufacturer => type.manufacturer,
           :fullName => type.full_name,
           :id => type.id,
-          :iata => type.iata
+          :iata => type.iata,
+          :range => type.range
         },
         :inuse => aircraft.inuse,
         :id => aircraft.id,
