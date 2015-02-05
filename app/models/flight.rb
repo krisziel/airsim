@@ -4,6 +4,8 @@ class Flight < ActiveRecord::Base
   belongs_to :route
   belongs_to :airline
 
+  validates_uniqueness_of :user_aircraft_id
+
   def basic_aircraft_data
     aircraft = user_aircraft.aircraft
     user_ac = {

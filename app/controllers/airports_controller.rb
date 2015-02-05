@@ -33,12 +33,15 @@ class AirportsController < ApplicationController
   end
 
   def seed
-    airportsarr = Airport.where(:display => 1)
+    # airportsarr = Airport.where(:display => 1)
+    airportlist = []
+    airportsarr = AllAirport.where('iata IN (?)',['DXB','AUH','SIN','KWI','BAH','DOH','KUL','SYD','GLA','MEL','PER','HKG','MFM','ICN','NRT','ROR','YCG','RAN','TIS','STU','NNI','NGO','PEK','PVG','HNL','KOA','OGG','LIH','AKL','GUM','ANC','SEA','PDX','SMF','SFO','SJC','LAX','SAN','PHX','LAS','MEX','GRU','GIG','SCL','EZE','PTY','IAH','DFW','ABQ','RNO','DEN','ORD','YVR','YYC','ZRH','YOW','YYT','BOS','JFK','EWR','IAD','RDU','CLT','MIA','MCO','FLL','MSY','OMA','DTW','MSP','CLE','MEM','BOI','OKC','BZN','FAR','TIJ','PVR','CUN','EDI','SNN','LHR','MAN','CDG','FRA','MUC','TXL','VIE','IST','CAI','TLV','DME','COS','CGK','MLE','DOM','DEL','BKK','FUK','KIX','GUM','FCO','BCN','MXP','TPE','TBS','AMS','BRU','GVA'])
     airportsarr.each do |airport|
       routes = Route.where("origin_id=? OR destination_id=?", airport.id, airport.id).length
       flights = Flight.count(airport.id)
-      puts "Airport.create(iata:\"#{airport.iata}\",citycode:\"#{airport.citycode}\",name:\"#{airport.name}\",city:\"#{airport.city}\",country:\"#{airport.country}\",population:#{airport.population},slots_total:#{airport.slots_total},slots_available:#{airport.slots_available},latitude:#{airport.latitude},longitude:#{airport.longitude},routes:#{routes},flights:#{flights})"
+      airportlist << "{iata:\"#{airport.iata}\",citycode:\"#{airport.citycode}\",name:\"#{airport.name}\",city:\"#{airport.city}\",country:\"#{airport.country}\",country_code:\"#{airport.country_code}\",region_name:\"#{airport.region_name}\",population:1000000,slots_total:1989,slots_available:1213,latitude:#{airport.latitude},longitude:#{airport.longitude}, display:1}"
     end
+    render html: "Airport.create([#{airportlist.join(',')}])"
   end
 
 end
