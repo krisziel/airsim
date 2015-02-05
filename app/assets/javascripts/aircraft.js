@@ -31,7 +31,7 @@ function loadUnusedAircraft(range, type, defaultAircraft) {
       if(i === 0) {
         selected = ' active selected';
       }
-      dropdown += '<div class="item' + selected + '" data-value="' + value.id + '">' + value.fullName + ' (' + value.config.f.seats + '/' + value.config.j.seats + '/' + value.config.p.seats + '/' + value.config.y.seats + ')</div>';
+      dropdown += '<div class="item' + selected + '" data-value="' + value.id + '">' + value.type.fullName + ' (' + value.config.f.seats + '/' + value.config.j.seats + '/' + value.config.p.seats + '/' + value.config.y.seats + ')</div>';
     });
     return dropdown;
   }
