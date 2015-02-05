@@ -27,7 +27,7 @@ class RoutesController < ApplicationController
 
   def info *id
     id = params[:id] || id
-    id = id || 0
+    id = 0 if id == nil
     route = Route.where("(id == ?) OR (origin_id == ? AND destination_id == ?) OR (origin_id == ? AND destination_id == ?)",id,params[:origin],params[:destination],params[:destination],params[:origin])[0]
     route = {
       :id => route.id,
