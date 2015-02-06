@@ -200,7 +200,7 @@ function displayNewFlight() {
   panel += '</div>';
   $('.route-panel').addClass('open');
   $('.flight-info').html(panel);
-  $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-46});
+  $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-15});
   $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
   $('.line').css({height:$('.route-panel').height()});
   $('.ui.dropdown').dropdown();
@@ -285,7 +285,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
     panel += '<div class="ui red button" id="cancelFlightButton">Cancel Flight</div>';
     panel += '</div>';
     $('.route-panel').addClass('open');
-    $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-46});
+    $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-15});
     $('.flight-info').html(panel).attr('data-flightid',flight.id);
     $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
     $('.line').css({height:$('.route-panel').height()});
