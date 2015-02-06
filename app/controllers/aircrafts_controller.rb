@@ -1,4 +1,5 @@
 class AircraftsController < ApplicationController
+  before_action :current_airline
 
   def all
     aircraft = Aircraft.all
@@ -23,7 +24,7 @@ class AircraftsController < ApplicationController
   end
 
   def airline
-    airline_id = 1
+    airline_id = current_airline.id
     aircraft_list = {}
     aircraft = UserAircraft.where(:airline_id => airline_id)
     aircraft.each do |aircraft|
@@ -33,7 +34,7 @@ class AircraftsController < ApplicationController
   end
 
   def buy
-    airline_id = 1
+    airline_id = current_airline.id
     airline = Airline.find(airline_id)
     money = airline.money
     aircraft = Aircraft.find(params[:aircraft_id].to_i)

@@ -170,7 +170,7 @@ function showRoutePanel(data) {
 function displayNewFlight() {
   var route = selectedRoute;
   var panel = '<div class="row-container">';
-  panel += '<div class="row" data-rowtype="aircraft"><div class="ui selection dropdown"><div class="default text">Aircraft</div><i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="" type="hidden"><div class="menu" style="max-height:260px;">' + loadUnusedAircraft(route.distance, 'dropdown') + '</div></div></div>';
+  panel += '<div class="row" data-rowtype="aircraft"><div class="ui selection dropdown"><div class="default text">Aircraft</div><i class="dropdown icon"></i><input name="aircraft-id" id="aircraftInput" value="" type="hidden"><div class="menu" style="max-height:210px;">' + loadUnusedAircraft(route.distance, 'dropdown') + '</div></div></div>';
   panel += '<div class="row" data-rowtype="flight-length"><span class="label">Flight Length:</span> <span>' + comma(route.distance) + '</span> Miles</div>';
   panel += '<div class="row" data-rowtype="flight-duration"><span class="label">Flight Time:</span> <span></span></div>';
   panel += '<div class="row" data-rowtype="weekly-frequencies"><span class="label">Weekly Frequencies:</span> <span id="weeklyFrequencies">1</span><input name="weekly-frequencies" type="range" class="frequencies" min="1" max="1" value="1"></div>';
@@ -200,6 +200,7 @@ function displayNewFlight() {
   panel += '</div>';
   $('.route-panel').addClass('open');
   $('.flight-info').html(panel);
+  $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-46});
   $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
   $('.line').css({height:$('.route-panel').height()});
   $('.ui.dropdown').dropdown();
@@ -284,6 +285,7 @@ function loadFlightInfo(flightid, routeid, flighti) {
     panel += '<div class="ui red button" id="cancelFlightButton">Cancel Flight</div>';
     panel += '</div>';
     $('.route-panel').addClass('open');
+    $('.flight-info .dropdown .menu').css({maxHeight:$('.route-panel').height()-46});
     $('.flight-info').html(panel).attr('data-flightid',flight.id);
     $('.route-panel .tab .segment[data-tab="f"]').addClass('open');
     $('.line').css({height:$('.route-panel').height()});
@@ -372,6 +374,7 @@ function createFlight() {
   }).done(function(data){
     flight = data;
     $('#addFlight').after('<a class="step own" id="flight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + flight.route_id + '"><div class="content"><div class="title">' + flight.aircraft.type.fullName + ' (' + flight.frequencies + 'x/week)</div><div class="description">Just Launched</div></div></a>');
+    loadFlightInfo(flight.id,flight.route_id);
     $('#flight' + flight.id).on('click',function(){
       loadFlightInfo($(this).data('flightid'),$(this).data('routeid'),$(this).data('flighti'));
     });
@@ -426,6 +429,8 @@ function closeRoutePanel() {
   setTimeout(function(){ $('.route-panel').remove(); },500);
 }
 function closeFlightInfoPanel() {
-  $('#flight' + selectedFlight.id).removeClass('active');
+  if($('#flight' + selectedFlight.id)) {
+    $('#flight' + selectedFlight.id).removeClass('active');
+  }
   $('.flight-info').html('<div class="empty">select a flight to view details</div>').removeAttr('data-flightid');
 }

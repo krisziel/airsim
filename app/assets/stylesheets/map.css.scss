@@ -11,3 +11,36 @@ html, body {
   padding: 0;
   position: absolute;
 }
+#money {
+  z-index: 678;
+  background: #ffffff;
+  border: 1px solid #999999;
+  padding: 0 10px;
+  color: #006400;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 15px;
+  position: absolute;
+  top: 10px;
+  left: 345px;
+  display: none;
+}
+#turn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 543;
+  background: #ffffff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px;
+  display: none;
+}

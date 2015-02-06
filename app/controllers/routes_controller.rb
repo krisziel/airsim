@@ -1,9 +1,9 @@
 class RoutesController < ApplicationController
+  before_action :current_airline
   require 'csv'
 
   def all
-    # flights = Flight.all
-    airline_id = 1
+    airline_id = current_airline.id
     flights = Flight.where(:airline_id => airline_id)
     @routes = {}
     flights.each do |flight|
@@ -42,8 +42,8 @@ class RoutesController < ApplicationController
   end
 
   def competitors *id
+    airline_id = current_airline.id
     id = params[:id] || id
-    airline_id = 1
     flights = []
     competitors = Flight.where("route_id = ? AND airline_id != ?", id, airline_id)
     competitors.each do |flight|
@@ -61,8 +61,8 @@ class RoutesController < ApplicationController
   end
 
   def own_flights *id
+    airline_id = current_airline.id
     id = params[:id] || id
-    airline_id = 1
     flights = []
     competitors = Flight.where("route_id = ? AND airline_id = ?", id, airline_id)
     competitors.each do |flight|
@@ -98,9 +98,9 @@ class RoutesController < ApplicationController
       :f => (mi*1.0*0.3).round
     }
     max = {
-      :y => (mi*0.1*2.0).round+1000,
-      :p => (mi*0.3*2.0).round+1000,
-      :j => (mi*0.5*2.0).round+1000,
+      :y => (mi*0.1*2.0).round+300,
+      :p => (mi*0.3*2.0).round+500,
+      :j => (mi*0.5*2.0).round+700,
       :f => (mi*1.0*2.0).round+1000
     }
     route.update(minfare:min.to_json,maxfare:max.to_json,distance:mi)

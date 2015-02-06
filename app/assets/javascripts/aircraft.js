@@ -225,6 +225,7 @@ function purchaseAircraft() {
     $('.aircraft-info .empty').html(data.purchases.length + ' ' + plural(data.purchases.length,selectedAircraft.fullName) + ' successfully purchased').css({display:'block'});
     $('.total-aircraft').html(parseInt($('.total-aircraft').html())+data.purchases.length);
     $('.unused-aircraft').html(parseInt($('.unused-aircraft').html())+data.purchases.length);
+    drawAircraftList(userAircrafts);
   });
 }
 

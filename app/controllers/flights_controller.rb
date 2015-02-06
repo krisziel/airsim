@@ -1,9 +1,10 @@
 class FlightsController < ApplicationController
+  before_action :current_airline
 
   def all
-    @airline_id = 1
+    airline_id = current_airline.id
     flights = []
-    flightarr = Flight.where(:airline_id => @airline_id)
+    flightarr = Flight.where(:airline_id => airline_id)
     flightarr.each do |flight|
       flight = {
         :route_id => flight.route_id,
@@ -100,7 +101,7 @@ class FlightsController < ApplicationController
       flight = Flight.find(flight_data[:id])
       flight.user_aircraft.update(:inuse => false)
       if flight.update(flight_data)
-        # UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
+        UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
         info flight_data[:id]
       else
         flight_data = {:error => "error saving route",:routeid => flight_data[:id]}

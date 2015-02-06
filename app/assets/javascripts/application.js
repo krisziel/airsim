@@ -17,17 +17,28 @@
 
 $(document).ready(function(){
   sizeMap();
-  loadMap();
-  loadAircraft();
-  createRouteList();
-  createAircraftList();
-  activateNav();
+  checkAirline();
 });
 $(window).resize(function(){
   sizeMap();
 });
 
+function launchApp() {
+  loadMap();
+  loadAircraft();
+  createRouteList();
+  createAircraftList();
+  activateNav();
+}
+
 function comma(number) {
   number = number || 0;
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function turn() {
+  $.getJSON('demand/turn').done(function(){
+    createRouteList();
+    createAircraftList();
+  });
 }

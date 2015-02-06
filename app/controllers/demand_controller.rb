@@ -28,6 +28,7 @@ class DemandController < ApplicationController
         flight_data = {
           :cost => (flight.route.distance*available_seats*0.16*2*flight.frequencies).round
         }
+        total_revenue = 0
         revenue = {}
         profit = {}
         loads = {}
@@ -44,9 +45,11 @@ class DemandController < ApplicationController
           class_rev = occupied*fares[key].to_i
           revenue[key] = class_rev.round
           loads[key] = (load_factor*100).round
+          total_revenue += class_rev.round
         end
         flight_data[:profit] = revenue.to_json
         flight_data[:loads] = loads.to_json
+        flight_data[:revenue] = total_revenue
         flight.update(flight_data)
         all_flights.push(flight_data)
       end

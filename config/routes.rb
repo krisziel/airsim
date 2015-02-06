@@ -41,4 +41,9 @@ Rails.application.routes.draw do
   ## TURN ##
   get 'demand/turn' => 'demand#turn'
 
+  ## AIRLINE ##
+  post 'airline/create' => 'airline#create'
+  get 'airline/login' => 'airline#login'
+  get 'airline/list' => 'airline#list'
+
 end
