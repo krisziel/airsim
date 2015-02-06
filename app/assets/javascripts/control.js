@@ -182,6 +182,9 @@ function createAircraftList() {
       $(this).addClass('active');
       sortAircraftList($(this).attr('data-type'));
     });
+    $('#purchaseAircraftButton').on('click',function(){
+      showAircraftPanel();
+    });
   });
 }
 function sortAircraftList(type) {

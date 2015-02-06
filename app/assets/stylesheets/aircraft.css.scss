@@ -1,0 +1,39 @@
+#aircraftPanel {
+  width: 600px;
+  height: 60%;
+  overflow: hidden;
+  .aircraft-list {
+    width: 260px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    float: left;
+  }
+  .aircraft-info {
+    width: 340px;
+    height: 100%;
+    float: left;
+    .row-container {
+      margin: 6px;
+    }
+    .config-row {
+      position: relative;
+      width: 100%;
+      height: 30px;
+      .checkbox {
+        margin-left: 5px;
+        float:right;
+      }
+      input[type="range"] {
+        float: right;
+      }
+      .label {
+        width: 90px;
+        float: left;
+      }
+      span {
+        float: left;
+      }
+    }
+  }
+}

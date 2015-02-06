@@ -96,7 +96,10 @@ class FlightsController < ApplicationController
     if flight_data.class == Array
       render json: flight_data
     else
-      if Flight.find(flight_data[:id]).update(flight_data)
+      flight = Flight.find(flight_data[:id])
+      UserAircraft.find(flight.user_aircraft_id).update(:inuse => false)
+      if flight.update(flight_data)
+        UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
         info flight_data[:id]
       else
         flight_data = {:error => "error saving route",:routeid => flight_data[:id]}
