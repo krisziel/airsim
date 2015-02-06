@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205201607) do
+ActiveRecord::Schema.define(version: 20150206160513) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "aircraft_capacities", force: true do |t|
     t.integer  "aircraft_id"
@@ -47,7 +50,7 @@ ActiveRecord::Schema.define(version: 20150205201607) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "money"
+    t.integer  "money",      limit: 8
   end
 
   create_table "airports", force: true do |t|
@@ -108,7 +111,7 @@ ActiveRecord::Schema.define(version: 20150205201607) do
 
   create_table "flights", force: true do |t|
     t.integer  "route_id"
-    t.integer  "user_aircraft_id", limit: 255
+    t.integer  "user_aircraft_id"
     t.integer  "duration"
     t.string   "amenities"
     t.integer  "frequencies"
@@ -120,7 +123,6 @@ ActiveRecord::Schema.define(version: 20150205201607) do
     t.integer  "cost"
     t.integer  "airline_id"
     t.integer  "game_id"
-    t.integer  "aircraft_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "loads"

@@ -26,11 +26,11 @@ function create() {
   modal += '<div class="inline fields">';
   modal += '<div class="field">';
   modal += '<label>Airline Name</label>';
-  modal += '<input placeholder="Airline Name" type="text" style="width: 497px;" id="airlineName">';
+  modal += '<input placeholder="Airline Name" type="text" style="width:100%;" id="airlineName">';
   modal += '</div>';
   modal += '<div class="field" style="margin-top: 10px;">';
   modal += '<label>Airline Code</label>';
-  modal += '<input placeholder="3-digit code" type="text" max="3" style="width: 497px;margin-left:3px;" id="airlineCode">';
+  modal += '<input placeholder="3-digit code" type="text" max="3" style="width:100%;margin-left:3px;" id="airlineCode">';
   modal += '</div>';
   modal += '<div class="ui submit button" style="margin-top: 10px;" id="createAirlineButton">Submit</div>';
   modal += '</div>';

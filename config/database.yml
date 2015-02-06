@@ -15,34 +15,34 @@
 # gem 'pg'
 
 default: &default
-  adapter: sqlite3
-  # adapter: postgresql
+  # adapter: sqlite3
+  adapter: postgresql
   encoding: unicode
   pool: 5
 
-# development:
-#   <<: *default
-#   database: airsim_development
-#
-# test:
-#   <<: *default
-#   database: airsim_test
-#
-# production:
-#   <<: *default
-#   database: airsim_production
-#   username: airsim
-#   password: <%= ENV['AIRSIM_DATABASE_PASSWORD'] %>
-
-
 development:
-  adapter: sqlite3
-  database: db/airsim_development.sqlite3
-  pool: 5
-  timeout: 5000
+  <<: *default
+  database: airsim_development
 
 test:
-  adapter: sqlite3
-  database: db/airsim_test.sqlite3
-  pool: 5
-  timeout: 5000
+  <<: *default
+  database: airsim_test
+
+production:
+  <<: *default
+  database: airsim_production
+  username: airsim
+  password: <%= ENV['AIRSIM_DATABASE_PASSWORD'] %>
+
+
+# development:
+#   adapter: sqlite3
+#   database: db/airsim_development.sqlite3
+#   pool: 5
+#   timeout: 5000
+#
+# test:
+#   adapter: sqlite3
+#   database: db/airsim_test.sqlite3
+#   pool: 5
+#   timeout: 5000

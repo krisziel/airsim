@@ -3,6 +3,10 @@ class AirlineController < ApplicationController
   def login
     if !cookies.signed[:airlineid]
       render json: {:error => 'no airline'}
+      cookies.signed[:airlineid] = {
+        value: 1,
+        expires: 1.month.from_now
+      }
     else
       airline = Airline.find(cookies.signed[:airlineid])
       if airline
@@ -32,10 +36,13 @@ class AirlineController < ApplicationController
     airlines = []
     airline_list = Airline.where(:game_id => Airline.find(cookies.signed[:airlineid]).game_id)
     airline_list.each do |airline|
+      network = get_network airline
       airline = {
         :name => airline.name,
         :iata => airline.iata,
-        :id => airline.id
+        :id => airline.id,
+        :routes => network[:routes],
+        :flights => network[:flights]
       }
       airlines.push(airline)
     end
@@ -45,6 +52,18 @@ class AirlineController < ApplicationController
   private
   def airline_params
     params.require(:airline).permit(:iata, :name, :money, :game_id)
+  end
+
+  def get_network airline
+    network = {
+      :routes => 0,
+      :flights => 0,
+      :competition => 0
+    }
+    flight_list = airline.flights.pluck(:route_id)
+    network[:flights] = flight_list.length
+    network[:routes] = flight_list.uniq.length
+    return network
   end
 
 end
