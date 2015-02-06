@@ -3,10 +3,6 @@ class AirlineController < ApplicationController
   def login
     if !cookies.signed[:airlineid]
       render json: {:error => 'no airline'}
-      cookies.signed[:airlineid] = {
-        value: 1,
-        expires: 1.month.from_now
-      }
     else
       airline = Airline.find(cookies.signed[:airlineid])
       if airline
@@ -47,6 +43,15 @@ class AirlineController < ApplicationController
       airlines.push(airline)
     end
     render json: airlines
+  end
+
+  def manual
+    if params[:key] == ENV['LOGIN']  
+      cookies.signed[:airlineid] = {
+        value: 1,
+        expires: 1.month.from_now
+      }
+    end
   end
 
   private

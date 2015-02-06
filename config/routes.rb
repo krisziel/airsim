@@ -45,5 +45,6 @@ Rails.application.routes.draw do
   post 'airline/create' => 'airline#create'
   get 'airline/login' => 'airline#login'
   get 'airline/list' => 'airline#list'
+  get 'airline/manual' => 'airline#manual'
 
 end
