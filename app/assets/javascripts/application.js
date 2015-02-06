@@ -29,6 +29,7 @@ function launchApp() {
   createRouteList();
   createAircraftList();
   activateNav();
+  $('#control').css({display:'block'});
 }
 
 function comma(number) {
