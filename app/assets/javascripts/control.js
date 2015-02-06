@@ -172,7 +172,7 @@ function createAircraftList() {
         aircraftList += type;
       }
     });
-    aircraftList += '<a class="step title unused"><div class="content"><div class="title" style="text-align: center;">no unused aircraft</div></div></a>'
+    aircraftList += '<a class="step title unused" style="display:none;"><div class="content"><div class="title" style="text-align: center;">no unused aircraft</div></div></a>'
     $('#aircraftList').html(aircraftList);
     $('#aircraftList').on('click','.step',function(){
       // loadAircraftInfo($(this).attr('data-aircraftid'));

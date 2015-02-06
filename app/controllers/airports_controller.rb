@@ -44,4 +44,20 @@ class AirportsController < ApplicationController
     render html: "Airport.create([#{airportlist.join(',')}])"
   end
 
+  def population
+    CSV.foreach("public/populations.csv") do |row|
+      Airport.where(:iata => row[0])[0].update(:population => row[1])
+    end
+  end
+
+  def reseed
+    population
+    airportlist = []
+    airportsarr = Airport.all
+    airportsarr.each do |airport|
+      airportlist << "{iata:\"#{airport.iata}\",citycode:\"#{airport.citycode}\",name:\"#{airport.name}\",city:\"#{airport.city}\",country:\"#{airport.country}\",country_code:\"#{airport.country_code}\",region_name:\"#{airport.region_name}\",population:#{airport.population},slots_total:1989,slots_available:1213,latitude:#{airport.latitude},longitude:#{airport.longitude}, display:1}"
+    end
+    render html: "Airport.create([#{airportlist.join(',')}])"
+  end
+
 end
