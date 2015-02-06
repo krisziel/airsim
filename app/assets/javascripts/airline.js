@@ -4,7 +4,7 @@ function updateMoney() {
   $('#money').html('Current Cash: $' + comma(airline.money)).css({display:'block'});
 }
 function checkAirline() {
-  $.getJSON('airlines/login').done(function(data){
+  $.getJSON('airline/login').done(function(data){
     if(data.id) {
       airline = data;
       launchApp();
