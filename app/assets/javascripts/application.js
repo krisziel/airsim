@@ -28,6 +28,7 @@ function launchApp() {
   loadAircraft();
   createRouteList();
   createAircraftList();
+  createGameList();
   activateNav();
   $('#control').css({display:'block'});
 }
