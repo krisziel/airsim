@@ -46,12 +46,11 @@ class AirlineController < ApplicationController
   end
 
   def manual
-    if params[:key] == ENV['LOGIN']  
-      cookies.signed[:airlineid] = {
-        value: 1,
-        expires: 1.month.from_now
-      }
-    end
+    cookies.signed[:airlineid] = {
+      value: 1,
+      expires: 1.month.from_now
+    }
+    render json: "success"
   end
 
   private
