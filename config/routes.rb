@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'routes/distance' => 'routes#distance'
   get 'route/parse_demand' => 'routes#parse_demand'
   get 'route/competitors' => 'routes#competitors'
+  get 'routes/generate' => 'routes#generate_routes'
   get 'routes/:id' => 'routes#info'
   get 'routes/:origin/:destination' => 'routes#info'
 
@@ -36,5 +37,8 @@ Rails.application.routes.draw do
 
   ## SEATS ##
   get 'seats/' => 'seats#all'
+
+  ## TURN ##
+  get 'demand/turn' => 'demand#turn'
 
 end

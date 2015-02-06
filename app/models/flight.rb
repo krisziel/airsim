@@ -60,4 +60,10 @@ class Flight < ActiveRecord::Base
     load_data
   end
 
+  def competitors
+    route = self.route
+    competitors = route.flights
+    competitors
+  end
+
 end

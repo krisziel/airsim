@@ -177,4 +177,112 @@ class RoutesController < ApplicationController
     render json: new_json
   end
 
+  def generate_routes
+    all_data = []
+    all_airports = Airport.all
+    all_airports.each do |airport|
+      other_airports = Airport.where("iata <> ?", airport.iata)
+      other_airports.each do |destination|
+        route = Route.where("origin_id IN (?) AND destination_id IN (?)",[destination.id,airport.id],[destination.id,airport.id])
+        if route.length == 0
+          fare_info = return_dist(airport, destination)
+          fare_price = generate_fare_price fare_info, airport.population, destination.population
+          new_route = {
+            :origin_id => airport.id,
+            :destination_id => destination.id,
+            :distance => fare_info[:distance],
+            :minfare => fare_info[:min].to_json,
+            :maxfare => fare_info[:max].to_json,
+          }
+          route_data = new_route.merge!(fare_price)
+          all_data.push(Route.create(route_data))
+        end
+      end
+    end
+    render json: all_data
+  end
+
+  def generate_fare_price fare_info, origin_pop, dest_pop
+    pax = (((80+rand(40))*0.01)*([origin_pop,dest_pop].min)*0.0007)*7
+    fare = 100+(fare_info[:distance]*0.3)
+    continium = ((80+rand(40))*0.01)
+    fare_x = {
+      :f => 4.0,
+      :j => 3.0,
+      :p => 1.4,
+      :y => 0.65
+    }
+    demand_x = {
+      :f => 0.1,
+      :j => 0.1,
+      :p => 0.15,
+      :y => 0.65
+    }
+    fares = {
+      :f => fare_x[:f]*fare,
+      :j => fare_x[:j]*fare,
+      :p => fare_x[:p]*fare,
+      :y => fare_x[:y]*fare
+    }
+    demand = {
+      :f => demand_x[:f]*pax,
+      :j => demand_x[:j]*pax,
+      :p => demand_x[:p]*pax,
+      :y => demand_x[:y]*pax
+    }
+    if continium > 1
+      fares[:f] = fares[:f]*continium
+      demand[:f] = demand[:f]*continium
+      fares[:j] = (fares[:j]*([continium,continium*0.9].max))
+      demand[:j] = (demand[:j]*([continium,continium*0.9].max))
+      fares[:y] = (fares[:y]*(2.0-continium))
+      demand[:y] = (demand[:y]*(2.0-continium))
+    elsif continium < 1
+      fares[:f] = fares[:f]*continium
+      demand[:f] = demand[:f]*continium
+      fares[:j] = (fares[:j]*([continium,continium*0.9].max))
+      demand[:j] = (demand[:j]*([continium,continium*0.9].max))
+      fares[:y] = (fares[:y]*(2.0-continium))
+      demand[:y] = (demand[:y]*(2.0-continium))
+    end
+    data = {
+      :demand => pax.round,
+      :demand_y => demand[:y].round,
+      :demand_p => demand[:p].round,
+      :demand_j => demand[:j].round,
+      :demand_f => demand[:f].round,
+      :price_y => fares[:y].round,
+      :price_p => fares[:p].round,
+      :price_j => fares[:j].round,
+      :price_f => fares[:f].round,
+    }
+  end
+
+  def return_dist origin, dest
+    lat_a = origin.latitude.to_f
+    lng_a = origin.longitude.to_f
+
+    lat_b = dest.latitude.to_f
+    lng_b = dest.longitude.to_f
+
+    mi = (gcm_distance([lat_a, lng_a], [lat_b, lng_b])*0.621371)
+    min = {
+      :y => (mi*0.1*0.3).round,
+      :p => (mi*0.3*0.3).round,
+      :j => (mi*0.5*0.3).round,
+      :f => (mi*1.0*0.3).round
+    }
+    max = {
+      :y => (mi*0.1*2.0).round+1000,
+      :p => (mi*0.3*2.0).round+1000,
+      :j => (mi*0.5*2.0).round+1000,
+      :f => (mi*1.0*2.0).round+1000
+    }
+    return {
+      :distance => mi,
+      :min => min,
+      :max => max
+    }
+  end
+
 end

@@ -349,8 +349,8 @@ function flightCabinInfo(flight, service_class) {
   var panel = '<div class="ui tab segment" data-tab="' + service_class + '">';
   panel += '<div class="row"' + displayClass + ' data-rowtype="seattype"><span class="label">Seat Type:</span> <span>' + cabin.name + '</span></div>';
   panel += '<div class="row"' + displayClass + ' data-rowtype="capacity"><span class="label">Capacity:</span> <span>' + cabin.seats + '</span></div>';
-  panel += '<div class="row"' + displayClass + ' data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>' + performance.load[service_class] + '</span></div>';
-  panel += '<div class="row"' + displayClass + ' data-rowtype="weeklyprofit"><span class="label">Weekly Profit:</span> $<span>' + comma(performance.profit[service_class]) + '</span></div>';
+  panel += '<div class="row"' + displayClass + ' data-rowtype="loadfactor"><span class="label">Load Factor:</span> <span>' + performance.load[service_class] + '%</span></div>';
+  panel += '<div class="row"' + displayClass + ' data-rowtype="weeklyprofit"><span class="label">Weekly Revenue:</span> $<span>' + comma(performance.profit[service_class]) + '</span></div>';
   panel += '<div class="row"' + displayClass + ' data-rowtype="fare"><span class="label">Fare:</span> $<span id="' + service_class + 'fare">' + comma(performance.fare[service_class]) + '</span><input name="' + service_class + 'fare" type="range" value="' + performance.fare[service_class] + '" class="fareRange" min="' + minFare + '" max="' + maxFare + '"></div>';
   panel += '<div class="row noclass"' + hideClass + ' data-rowtype="noclass">This aircraft has no ' + className[service_class] + ' class</div>';
   panel += '</div>';

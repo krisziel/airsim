@@ -33,7 +33,6 @@ class FlightsController < ApplicationController
     flight.class == Array ? flight = flight[0] : flight = flight
     user_ac = UserAircraft.find(flight.user_aircraft_id)
     ac_config = JSON.parse(user_ac.aircraft_config)
-    p ac_config
     ac_config.each do |key,value|
       seat = Seat.find(value['seat_id'])
       value = {
@@ -93,14 +92,15 @@ class FlightsController < ApplicationController
   end
 
   def update
+    Flight.find(params[:flight][:id]).user_aircraft.update(:inuse => false)
     flight_data = validate_flight flight_params, "update"
     if flight_data.class == Array
       render json: flight_data
     else
       flight = Flight.find(flight_data[:id])
-      UserAircraft.find(flight.user_aircraft_id).update(:inuse => false)
+      flight.user_aircraft.update(:inuse => false)
       if flight.update(flight_data)
-        UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
+        # UserAircraft.find(flight_data[:user_aircraft_id]).update(:inuse => true)
         info flight_data[:id]
       else
         flight_data = {:error => "error saving route",:routeid => flight_data[:id]}
