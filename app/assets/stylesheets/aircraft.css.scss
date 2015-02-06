@@ -9,10 +9,31 @@
     height: 100%;
     float: left;
   }
+  .fleet-info {
+    width: 260px;
+    float: left;
+    height: 100%;
+    .info {
+      height: 60px;
+      margin: 5px 0 0 0;
+      .statistic {
+        width: 120px;
+      }
+    }
+    .aircraft-list {
+      margin-top: -1px;
+    }
+  }
   .aircraft-info {
     width: 340px;
     height: 100%;
     float: left;
+    .empty {
+      min-height: 400px;
+      line-height: 400px;
+      text-align: center;
+      font-weight: bold;
+    }
     .row-container {
       margin: 6px;
     }
@@ -34,6 +55,9 @@
       span {
         float: left;
       }
+    }
+    #purchaseButton {
+      margin: 5px 85px;
     }
   }
 }

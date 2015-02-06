@@ -33,6 +33,7 @@ class FlightsController < ApplicationController
     flight.class == Array ? flight = flight[0] : flight = flight
     user_ac = UserAircraft.find(flight.user_aircraft_id)
     ac_config = JSON.parse(user_ac.aircraft_config)
+    p ac_config
     ac_config.each do |key,value|
       seat = Seat.find(value['seat_id'])
       value = {

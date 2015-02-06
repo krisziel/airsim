@@ -225,9 +225,9 @@ function displayNewFlight() {
 }
 function updateNewCabinView(aircraftid) {
   var newAircraft = userAircrafts[aircraftid];
-  var newDuration = calculateDuration(selectedRoute.distance,newAircraft.aircraft.speed);
+  var newDuration = calculateDuration(selectedRoute.distance,newAircraft.type.speed);
   $('#launchFlightButton').addClass('positive');
-  $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.aircraft.turn_time));
+  $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.type.turn_time));
   $('.row[data-rowtype="flight-duration"] span:not(.label)').html(minutesToHours(newDuration));
   $.each(newAircraft.config,function(key,value){
     if(value.seats === 0) {
@@ -316,8 +316,8 @@ function updateCabinView(aircraftid) {
   var newAircraft = userAircrafts[aircraftid];
   var oldAircraft = selectedFlight.aircraft.config;
   var flight = selectedFlight;
-  var newDuration = calculateDuration(flight.route.distance,newAircraft.aircraft.speed);
-  $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.aircraft.turn_time));
+  var newDuration = calculateDuration(flight.route.distance,newAircraft.type.speed);
+  $('input[name="weekly-frequencies"]').attr("max",maxFrequencies(newDuration,newAircraft.type.turn_time));
   $('.row[data-rowtype="flight-duration"] span:not(.label)').html(minutesToHours(newDuration));
   $.each(newAircraft.config,function(key,value){
     if(value.seats === 0) {
@@ -326,7 +326,7 @@ function updateCabinView(aircraftid) {
       var load = flight.performance.load[key];
       var newload = Math.min(Math.round((load*oldAircraft[key].seats)/(value.seats)),100);
       var classContainer = $('.segment[data-tab="' + key + '"]');
-      classContainer.find('[data-rowtype="seattype"] span:not(.label)').html(seats[value.seat_id].name);
+      classContainer.find('[data-rowtype="seattype"] span:not(.label)').html(seats[value.id].name);
       classContainer.find('[data-rowtype="capacity"] span:not(.label)').html(value.seats);
       classContainer.find('[data-rowtype="loadfactor"] span:not(.label)').html(newload + '% (adjusted for swap)');
       classContainer.find('[data-rowtype="weeklyprofit"] span:not(.label)').html(comma(flight.performance.profit[key]) + ' (prior to swap)');
