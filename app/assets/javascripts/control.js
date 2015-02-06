@@ -208,3 +208,12 @@ function sortAircraftList(type) {
     $('#aircraftList .unused').css({display:'none'});
   }
 }
+function createGameList() {
+  $.getJSON('/airline/list').done(function(data){
+    $('#gameList').html('');
+    $.each(data,function(i,airline){
+      var airline = '<a class="step"><div class="content"><div class="title">' + airline.name + ' (' + airline.ata + ')</div>'+'<div class="description">' + airline.routes + ' Routes (' + airline.flights + ')</div></div></a>';
+      $('#gameList').append(airline);
+    });
+  });
+}
