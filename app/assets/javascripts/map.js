@@ -11,7 +11,7 @@ function loadMap(){
     infoControl: true,
     minZoom:3,
     maxZoom:14
-  }).setView([39.8282,-98.5795], 3);
+  }).setView([39.8282,-98.5795], 5);
   map.setMaxBounds([[-90,-180], [90,180]]);
   globalMap = map;
   addAirports(map);
