@@ -9,21 +9,16 @@ function activateNav() {
   });
 }
 function createAirportList() {
-  $('#airportList').empty();
+  var airportArray = [];
   $.each(airports,function(key,value){
-    airport = airports[key];
-    var airportRow = '<div class="content">';
-    airportRow += '<div>' + airport.name + ' (' + airport.iata + ')</div>';
-    airportRow += '<div>' + airport.city + ', ' + airport.country + '</div>';
-    var thisAirport = $('<a/>',{
-      class:'step',
-      id:'airportlist' + airport.id,
-      html:airportRow,
-    }).attr('data-id',airport.id).attr('data-iata',airport.iata).attr('data-city',airport.city);
-    $('#airportList').append(thisAirport);
-    $('#airportlist' + airport.id).on('click',function(){
-      expandAirportInfo($(this).attr('data-id'));
-    });
+    airportArray.push(value);
+  });
+  var source = $('#airport-list-template').html();
+  var template = Handlebars.compile(source);
+  var html = template({airports:airportArray});
+  $('#airportList').html(html);
+  $('#airportList').on('click','a',function(){
+    expandAirportInfo($(this).attr('data-id'));
   });
   var emptySearch = $('<a/>',{
     class:'step',
