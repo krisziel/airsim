@@ -80,17 +80,22 @@ function createRouteList() {
 }
 function drawRouteList(data) {
   var panel = '';
+  var flightArray = [];
   $.each(data,function(key,value){
-    flight = value;
+    var flight = value;
     var profit = (flight.revenue - flight.cost);
     if(profit >= 0) {
-      var profitString = '(<span class="greenColor">$' + comma(profit) + ' profit</span>)';
+      var profitString = '<span class="greenColor">$' + comma(profit) + ' profit</span>';
     } else {
-      var profitString = '(<span class="redColor">$' + comma(Math.abs(profit)) + ' loss</span>)';
+      var profitString = '<span class="redColor">$' + comma(Math.abs(profit)) + ' loss</span>';
     }
-    panel += '<a class="step own" id="menuFlight' + flight.id + '" data-flightid="' + flight.id + '" data-routeid="' + flight.route_id + '"><div class="content"><div class="title">' + flight.origin.iata + '-' + flight.destination.iata + ' (' + flight.aircraft.type.fullName + ' x ' + flight.frequencies + ')</div>'+'<div class="description">' + flight.load_factor.factor + '% Load Factor ' + profitString + '</div></div></a>';
+    value.profit = profitString;
+    flightArray.push(value);
   });
-  $('#flightList').html(panel);
+  var source = $('#flight-list-template').html();
+  var template = Handlebars.compile(source);
+  var html = template({flights:flightArray});
+  $('#flightList').html(html);
   $('#flightList').on('click','.step',function(){
     loadExistingRoute($(this).attr('data-routeid'));
     selectedRoute = $(this).attr('data-routeid');

@@ -23,5 +23,37 @@
         </a>
       {{/each}}
     </script>
+    <script type="text/x-handlebars-template" id="flight-list-template">
+      {{#each flights}}
+        <a class="step own" id="menuFlight{{id}}" data-flightid="{{id}}" data-routeid="{{route_id}}" data-city="{{city}}">
+          <div class="content">
+            <div class="title">
+              <div>{{origin.iata}}-{{destination.iata}} ({{aircraft.type.fullName}} x {{frequencies}})</div>
+              <div class="description">{{load_factor.factor}}% Load Factor ({{{profit}}})</div>
+            </div>
+          </div>
+        </a>
+      {{/each}}
+    </script>
+    <script type="text/x-handlebars-template" id="aircraft-list-template">
+      {{#each airports}}
+      <a class="step" id="airportlist{{id}}" data-id="{{id}}" data-iata="{{iata}}" data-city="{{city}}">
+        <div class="content">
+          <div>{{name}} ({{iata}})</div>
+          <div>{{city}}, {{country}}</div>
+        </div>
+      </a>
+      {{/each}}
+    </script>
+    <script type="text/x-handlebars-template" id="airline-list-template">
+      {{#each airports}}
+      <a class="step" id="airportlist{{id}}" data-id="{{id}}" data-iata="{{iata}}" data-city="{{city}}">
+        <div class="content">
+          <div>{{name}} ({{iata}})</div>
+          <div>{{city}}, {{country}}</div>
+        </div>
+      </a>
+      {{/each}}
+    </script>
   </body>
 </html>
